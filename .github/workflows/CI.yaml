@@ -9,6 +9,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: cabbage/search-service
+  SERVICE_NAME: search-service
 
 jobs:
   build:
@@ -30,9 +31,10 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Build Docker image
+      working-directory: ./${{ env.SERVICE_NAME }}
       run: |
         ./gradlew bootJar
-        docker build -t ${{ env.ECR_REPOSITORY }}:latest -f ./search-service/Dockerfile .
+        docker build -t ${{ env.ECR_REPOSITORY }}:latest -f Dockerfile .
 
     - name: Tag & Push to ECR
       run: |

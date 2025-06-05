@@ -7,7 +7,7 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: search-service
+  ECR_REPOSITORY: cabbage/search-service
 
 jobs:
   build:

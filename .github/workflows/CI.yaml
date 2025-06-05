@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - BVFH-168-elastic-crud
 
 env:
   AWS_REGION: ap-northeast-2

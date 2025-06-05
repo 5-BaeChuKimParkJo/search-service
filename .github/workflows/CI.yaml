@@ -31,7 +31,6 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
 
     - name: Build Docker image
-      working-directory: ./${{ env.SERVICE_NAME }}
       run: |
         ./gradlew bootJar
         docker build -t ${{ env.ECR_REPOSITORY }}:latest -f Dockerfile .

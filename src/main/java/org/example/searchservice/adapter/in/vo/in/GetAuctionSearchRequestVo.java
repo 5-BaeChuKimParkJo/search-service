@@ -1,18 +1,27 @@
 package org.example.searchservice.adapter.in.vo.in;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@AllArgsConstructor
+@Setter
+@NoArgsConstructor
 public class GetAuctionSearchRequestVo {
 
     private String auctionUuid;
-    private String title;
+    private String auctionTitle;
     private String description;
     private String status;
     private String directDealLocation;
+
+    @Builder
+    public GetAuctionSearchRequestVo(String auctionUuid, String auctionTitle, String description,
+                                     String status, String directDealLocation) {
+        this.auctionUuid = auctionUuid;
+        this.auctionTitle = auctionTitle;
+        this.description = description;
+        this.status = status;
+        this.directDealLocation = directDealLocation;
+    }
 
 }

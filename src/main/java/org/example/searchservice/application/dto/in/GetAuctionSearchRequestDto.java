@@ -10,15 +10,15 @@ import lombok.NoArgsConstructor;
 public class GetAuctionSearchRequestDto {
 
     private String auctionUuid;
-    private String title;
+    private String auctionTitle;
     private String description;
     private String status;
     private String directDealLocation;
 
     @Builder
-    public GetAuctionSearchRequestDto(String auctionUuid, String title, String description, String status, String directDealLocation) {
+    public GetAuctionSearchRequestDto(String auctionUuid, String auctionTitle, String description, String status, String directDealLocation) {
         this.auctionUuid = auctionUuid;
-        this.title = title;
+        this.auctionTitle = auctionTitle;
         this.description = description;
         this.status = status;
         this.directDealLocation = directDealLocation;

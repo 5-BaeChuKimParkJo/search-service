@@ -1,5 +1,7 @@
 package org.example.searchservice.application.port.in;
 
+import org.example.searchservice.adapter.in.kafka.event.AuctionCreateEvent;
+import org.example.searchservice.application.dto.in.AuctionCreateEventDto;
 import org.example.searchservice.application.dto.in.CreateAuctionSearchRequestDto;
 import org.example.searchservice.application.dto.in.GetAuctionSearchRequestDto;
 import org.example.searchservice.application.dto.out.GetAuctionSearchResponseDto;
@@ -15,6 +17,7 @@ public interface AuctionSearchUseCase {
 
     List<SuggestAuctionSearchResponseDto> suggestAuctions(String keyword);
 
+    void saveAuction(AuctionCreateEventDto auctionCreateEventDto);
 
 
 }

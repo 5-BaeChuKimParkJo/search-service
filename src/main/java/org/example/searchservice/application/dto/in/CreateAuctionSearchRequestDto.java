@@ -9,17 +9,17 @@ import lombok.NoArgsConstructor;
 public class CreateAuctionSearchRequestDto {
 
     private String auctionUuid;
-    private String title;
+    private String auctionTitle;
     private String description;
     private String status;
     private String thumbnailKey;
     private String directDealLocation;
 
     @Builder
-    public CreateAuctionSearchRequestDto(String auctionUuid, String title, String description,
+    public CreateAuctionSearchRequestDto(String auctionUuid, String auctionTitle, String description,
                                          String status, String thumbnailKey, String directDealLocation) {
         this.auctionUuid = auctionUuid;
-        this.title = title;
+        this.auctionTitle = auctionTitle;
         this.description = description;
         this.status = status;
         this.thumbnailKey = thumbnailKey;

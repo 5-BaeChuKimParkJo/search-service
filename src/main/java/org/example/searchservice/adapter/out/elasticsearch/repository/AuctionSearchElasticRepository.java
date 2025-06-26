@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface AuctionSearchElasticRepository extends ElasticsearchRepository<AuctionSearchDocument, String> {
 
-    List<AuctionSearchDocument> findByTitle(String title);
+    List<AuctionSearchDocument> findByAuctionTitle(String title);
 
 
 }

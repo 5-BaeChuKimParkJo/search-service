@@ -29,7 +29,7 @@ public class AuctionSearchController {
             @ModelAttribute GetAuctionSearchRequestVo getAuctionSearchRequestVo
     ){
 
-        log.info("Received request to search auctions with parameters: {}", getAuctionSearchRequestVo.getTitle());
+        log.info("Received request to search auctions with parameters: {}", getAuctionSearchRequestVo.getAuctionTitle());
         List<GetAuctionSearchResponseDto> getAuctionSearchResponseDto = auctionSearchUseCase.searchAuctions(
                 auctionSearchVoMapper.toGetAuctionSearchRequestDto(getAuctionSearchRequestVo)
         );

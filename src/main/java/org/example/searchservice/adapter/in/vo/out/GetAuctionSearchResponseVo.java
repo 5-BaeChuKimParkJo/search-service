@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetAuctionSearchResponseVo {
     private String auctionUuid;
-    private String title;
+    private String auctionTitle;
     private String description;
     private String status;
     private String thumbnailKey;
@@ -17,10 +17,10 @@ public class GetAuctionSearchResponseVo {
 
 
     @Builder
-    public GetAuctionSearchResponseVo(String auctionUuid, String title, String description,
+    public GetAuctionSearchResponseVo(String auctionUuid, String auctionTitle, String description,
                                       String status, String thumbnailKey, String directDealLocation) {
         this.auctionUuid = auctionUuid;
-        this.title = title;
+        this.auctionTitle = auctionTitle;
         this.description = description;
         this.status = status;
         this.thumbnailKey = thumbnailKey;

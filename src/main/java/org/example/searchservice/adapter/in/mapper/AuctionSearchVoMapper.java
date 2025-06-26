@@ -21,7 +21,7 @@ public class AuctionSearchVoMapper {
     public CreateAuctionSearchRequestDto toCreateAuctionSearchRequestDto(CreateAuctionSearchRequestVo createAuctionSearchRequestVo) {
         return CreateAuctionSearchRequestDto.builder()
                 .auctionUuid(createAuctionSearchRequestVo.getAuctionUuid())
-                .title(createAuctionSearchRequestVo.getTitle())
+                .auctionTitle(createAuctionSearchRequestVo.getAuctionTitle())
                 .description(createAuctionSearchRequestVo.getDescription())
                 .status(createAuctionSearchRequestVo.getStatus())
                 .thumbnailKey(createAuctionSearchRequestVo.getThumbnailKey())
@@ -32,7 +32,7 @@ public class AuctionSearchVoMapper {
     public GetAuctionSearchRequestDto toGetAuctionSearchRequestDto(GetAuctionSearchRequestVo getAuctionSearchRequestVo) {
         return GetAuctionSearchRequestDto.builder()
                 .auctionUuid(getAuctionSearchRequestVo.getAuctionUuid())
-                .title(getAuctionSearchRequestVo.getTitle())
+                .auctionTitle(getAuctionSearchRequestVo.getAuctionTitle())
                 .description(getAuctionSearchRequestVo.getDescription())
                 .status(getAuctionSearchRequestVo.getStatus())
                 .directDealLocation(getAuctionSearchRequestVo.getDirectDealLocation())
@@ -42,7 +42,7 @@ public class AuctionSearchVoMapper {
     public GetAuctionSearchResponseVo toGetAuctionSearchResponseVo(GetAuctionSearchResponseDto getAuctionSearchResponseDto) {
         return GetAuctionSearchResponseVo.builder()
                 .auctionUuid(getAuctionSearchResponseDto.getAuctionUuid())
-                .title(getAuctionSearchResponseDto.getTitle())
+                .auctionTitle(getAuctionSearchResponseDto.getAuctionTitle())
                 .description(getAuctionSearchResponseDto.getDescription())
                 .status(getAuctionSearchResponseDto.getStatus())
                 .thumbnailKey(getAuctionSearchResponseDto.getThumbnailKey())

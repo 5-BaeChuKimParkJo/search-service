@@ -1,20 +1,15 @@
 package org.example.searchservice.adapter.out.elasticsearch.repository;
 
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.searchservice.adapter.out.elasticsearch.entity.AuctionSearchDocument;
 import org.example.searchservice.adapter.out.elasticsearch.mapper.AuctionSearchDocumentMapper;
-import org.example.searchservice.adapter.out.elasticsearch.querybuilder.AuctionSearchQueryBuilder;
-import org.example.searchservice.application.dto.in.CreateAuctionSearchRequestDto;
-import org.example.searchservice.application.dto.in.GetAuctionSearchRequestDto;
+import org.example.searchservice.application.dto.in.*;
 import org.example.searchservice.application.dto.out.GetAuctionSearchResponseDto;
 import org.example.searchservice.application.port.out.AuctionSearchRepositoryPort;
+import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHit;
-import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,15 +23,16 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
     private final AuctionSearchElasticRepository auctionSearchElasticRepository;
     private final AuctionSearchDocumentMapper auctionSearchDocumentMapper;
     private final ElasticsearchOperations elasticsearchOperations;
+    private final ElasticsearchTemplate elasticsearchTemplate;
 
     @Override
     public List<GetAuctionSearchResponseDto> search(GetAuctionSearchRequestDto getAuctionSearchRequestDto) {
-        List<AuctionSearchDocument> auctionSearchDocuments = auctionSearchElasticRepository.findByTitle(
-                getAuctionSearchRequestDto.getTitle()
+        List<AuctionSearchDocument> auctionSearchDocuments = auctionSearchElasticRepository.findByAuctionTitle(
+                getAuctionSearchRequestDto.getAuctionTitle()
         );
         log.info("Found {} auction search documents for title: {}",
                 auctionSearchDocuments.size(),
-                getAuctionSearchRequestDto.getTitle()
+                getAuctionSearchRequestDto.getAuctionTitle()
         );
 
 //        Query query = AuctionSearchQueryBuilder.buildQuery(getAuctionSearchRequestDto);
@@ -54,4 +50,25 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
                 auctionSearchDocumentMapper.toAuctionSearchDocument(createAuctionSearchRequestDto)
         );
     }
+
+    @Override
+    public void saveMessage(String message) {
+        // This method is not implemented in the original code, but can be used for logging or other purposes
+        log.info("Saving message: {}", message);
+
+    }
+
+    @Override
+    public void saveAuction(AuctionCreateEventDto auctionCreateEventDto, CategoryResponseDto categoryResponseDto, List<TagResponseDto> tagResponseDtoList) {
+        auctionSearchElasticRepository.save(
+                auctionSearchDocumentMapper.toAuctionSearchDocument(
+                        auctionCreateEventDto,
+                        categoryResponseDto,
+                        tagResponseDtoList
+                )
+        );
+    }
+
+
+
 }

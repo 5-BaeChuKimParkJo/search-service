@@ -31,22 +31,43 @@ public class AuctionSearchVoMapper {
 
     public GetAuctionSearchRequestDto toGetAuctionSearchRequestDto(GetAuctionSearchRequestVo getAuctionSearchRequestVo) {
         return GetAuctionSearchRequestDto.builder()
-                .auctionUuid(getAuctionSearchRequestVo.getAuctionUuid())
                 .auctionTitle(getAuctionSearchRequestVo.getAuctionTitle())
-                .description(getAuctionSearchRequestVo.getDescription())
-                .status(getAuctionSearchRequestVo.getStatus())
-                .directDealLocation(getAuctionSearchRequestVo.getDirectDealLocation())
+                .categoryName(getAuctionSearchRequestVo.getCategoryName())
+                .tagNames(getAuctionSearchRequestVo.getTagNames())
+                .isDirectDeal(getAuctionSearchRequestVo.isDirectDeal())
+                .productCondition(getAuctionSearchRequestVo.getProductCondition())
                 .build();
+
     }
 
     public GetAuctionSearchResponseVo toGetAuctionSearchResponseVo(GetAuctionSearchResponseDto getAuctionSearchResponseDto) {
         return GetAuctionSearchResponseVo.builder()
+                .id(getAuctionSearchResponseDto.getId())
                 .auctionUuid(getAuctionSearchResponseDto.getAuctionUuid())
                 .auctionTitle(getAuctionSearchResponseDto.getAuctionTitle())
-                .description(getAuctionSearchResponseDto.getDescription())
+                .auctionDescription(getAuctionSearchResponseDto.getAuctionDescription())
                 .status(getAuctionSearchResponseDto.getStatus())
                 .thumbnailKey(getAuctionSearchResponseDto.getThumbnailKey())
                 .directDealLocation(getAuctionSearchResponseDto.getDirectDealLocation())
+                .thumbnailUrl(getAuctionSearchResponseDto.getThumbnailUrl())
+                .images(getAuctionSearchResponseDto.getImages())
+                .sellerUuid(getAuctionSearchResponseDto.getSellerUuid())
+                .startAt(getAuctionSearchResponseDto.getStartAt())
+                .endAt(getAuctionSearchResponseDto.getEndAt())
+                .version(getAuctionSearchResponseDto.getVersion())
+                .createdAt(getAuctionSearchResponseDto.getCreatedAt())
+                .viewCount(getAuctionSearchResponseDto.getViewCount())
+                .currentBid(getAuctionSearchResponseDto.getCurrentBid())
+                .minimumBid(getAuctionSearchResponseDto.getMinimumBid())
+                .description(getAuctionSearchResponseDto.getDescription())
+                .isDirectDeal(getAuctionSearchResponseDto.isDirectDeal())
+                .productCondition(getAuctionSearchResponseDto.getProductCondition())
+                .categoryId(getAuctionSearchResponseDto.getCategoryId())
+                .categoryName(getAuctionSearchResponseDto.getCategoryName())
+                .categoryDescription(getAuctionSearchResponseDto.getCategoryDescription())
+                .categoryThumbnailKey(getAuctionSearchResponseDto.getCategoryThumbnailKey())
+                .tagId(getAuctionSearchResponseDto.getTagId())
+                .tagNames(getAuctionSearchResponseDto.getTagNames())
                 .build();
     }
 

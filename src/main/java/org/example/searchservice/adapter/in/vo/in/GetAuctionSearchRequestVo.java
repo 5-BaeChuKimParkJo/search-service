@@ -3,25 +3,27 @@ package org.example.searchservice.adapter.in.vo.in;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class GetAuctionSearchRequestVo {
 
-    private String auctionUuid;
     private String auctionTitle;
-    private String description;
-    private String status;
-    private String directDealLocation;
+    private String categoryName;
+    private List<String> tagNames;
+    private boolean isDirectDeal;
+    private String productCondition;
 
     @Builder
-    public GetAuctionSearchRequestVo(String auctionUuid, String auctionTitle, String description,
-                                     String status, String directDealLocation) {
-        this.auctionUuid = auctionUuid;
+    public GetAuctionSearchRequestVo(String auctionTitle, String categoryName, List<String> tagNames,
+                                      boolean isDirectDeal, String productCondition) {
         this.auctionTitle = auctionTitle;
-        this.description = description;
-        this.status = status;
-        this.directDealLocation = directDealLocation;
+        this.categoryName = categoryName;
+        this.tagNames = tagNames;
+        this.isDirectDeal = isDirectDeal;
+        this.productCondition = productCondition;
     }
 
 }

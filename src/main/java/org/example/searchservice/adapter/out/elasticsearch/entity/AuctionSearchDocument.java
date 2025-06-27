@@ -6,13 +6,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.searchservice.adapter.in.kafka.event.Image;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Document(indexName = "auction_search")
@@ -20,33 +24,81 @@ public class AuctionSearchDocument {
 
     @Id
     private String id;
+    @Field(type = FieldType.Keyword)
     private String auctionUuid;
+
+    @Field(type = FieldType.Text)
     private String auctionTitle;
+
+    @Field(type = FieldType.Text)
     private String auctionDescription;
+
+    @Field(type = FieldType.Keyword)
     private String status;
+
+    @Field(type = FieldType.Keyword)
     private String thumbnailKey;
+
+    @Field(type = FieldType.Text)
     private String directDealLocation;
+
+    @Field(type = FieldType.Keyword)
     private String thumbnailUrl;
+
+    @Field(type = FieldType.Nested)
     private List<Image> images;
+
+    @Field(type = FieldType.Keyword)
     private String sellerUuid;
+
+    @Field(type = FieldType.Date)
     private String startAt;
+
+    @Field(type = FieldType.Date)
     private String endAt;
+
+    @Field(type = FieldType.Integer)
     private int version;
+
+    @Field(type = FieldType.Date)
     private String createdAt;
+
+    @Field(type = FieldType.Integer)
     private int viewCount;
+
+    @Field(type = FieldType.Integer)
     private int currentBid;
+
+    @Field(type = FieldType.Integer)
     private int minimumBid;
+
+    @Field(type = FieldType.Text)
     private String description;
+
+    @Field(type = FieldType.Boolean)
     private boolean isDirectDeal;
+
+    @Field(type = FieldType.Keyword)
     private String productCondition;
 
-    //category
+    // category
+    @Field(type = FieldType.Integer)
     private int categoryId;
+
+    @Field(type = FieldType.Text)
     private String categoryName;
+
+    @Field(type = FieldType.Text)
     private String categoryDescription;
+
+    @Field(type = FieldType.Keyword)
     private String categoryThumbnailKey;
-    //tag
+
+    // tag
+    @Field(type = FieldType.Long)
     private List<Long> tagId;
+
+    @Field(type = FieldType.Text)
     private List<String> tagNames;
 
     @Builder

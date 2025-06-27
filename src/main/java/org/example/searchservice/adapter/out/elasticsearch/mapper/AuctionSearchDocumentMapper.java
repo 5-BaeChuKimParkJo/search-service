@@ -66,12 +66,32 @@ public class AuctionSearchDocumentMapper {
 
     public GetAuctionSearchResponseDto toGetAuctionSearchResponseDto(AuctionSearchDocument auctionSearchDocument) {
         return GetAuctionSearchResponseDto.builder()
+                .id(auctionSearchDocument.getId())
                 .auctionUuid(auctionSearchDocument.getAuctionUuid())
                 .auctionTitle(auctionSearchDocument.getAuctionTitle())
-                .description(auctionSearchDocument.getAuctionDescription())
+                .auctionDescription(auctionSearchDocument.getAuctionDescription())
                 .status(auctionSearchDocument.getStatus())
                 .thumbnailKey(auctionSearchDocument.getThumbnailKey())
                 .directDealLocation(auctionSearchDocument.getDirectDealLocation())
+                .thumbnailUrl(auctionSearchDocument.getThumbnailUrl())
+                .images(auctionSearchDocument.getImages())
+                .sellerUuid(auctionSearchDocument.getSellerUuid())
+                .startAt(auctionSearchDocument.getStartAt())
+                .endAt(auctionSearchDocument.getEndAt())
+                .version(auctionSearchDocument.getVersion())
+                .createdAt(auctionSearchDocument.getCreatedAt())
+                .viewCount(auctionSearchDocument.getViewCount())
+                .currentBid(auctionSearchDocument.getCurrentBid())
+                .minimumBid(auctionSearchDocument.getMinimumBid())
+                .description(auctionSearchDocument.getDescription())
+                .isDirectDeal(auctionSearchDocument.isDirectDeal())
+                .productCondition(auctionSearchDocument.getProductCondition())
+                .categoryId(auctionSearchDocument.getCategoryId())
+                .categoryName(auctionSearchDocument.getCategoryName())
+                .categoryDescription(auctionSearchDocument.getCategoryDescription())
+                .categoryThumbnailKey(auctionSearchDocument.getCategoryThumbnailKey())
+                .tagId(auctionSearchDocument.getTagId())
+                .tagNames(auctionSearchDocument.getTagNames())
                 .build();
     }
 }

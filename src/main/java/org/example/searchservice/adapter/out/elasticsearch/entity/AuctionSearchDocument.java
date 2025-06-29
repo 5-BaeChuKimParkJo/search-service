@@ -13,6 +13,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.time.Instant;
 import java.util.List;
 
 @Getter
@@ -52,16 +53,16 @@ public class AuctionSearchDocument {
     private String sellerUuid;
 
     @Field(type = FieldType.Date)
-    private String startAt;
+    private Instant startAt;
 
     @Field(type = FieldType.Date)
-    private String endAt;
+    private Instant endAt;
 
     @Field(type = FieldType.Integer)
     private int version;
 
     @Field(type = FieldType.Date)
-    private String createdAt;
+    private Instant createdAt;
 
     @Field(type = FieldType.Integer)
     private int viewCount;
@@ -104,7 +105,7 @@ public class AuctionSearchDocument {
     @Builder
     public AuctionSearchDocument(String auctionUuid, String auctionTitle, String auctionDescription, String status,
                                  String thumbnailKey, String directDealLocation, String thumbnailUrl, List<Image> images,
-                                 String sellerUuid, String startAt, String endAt, int version, String createdAt,
+                                 String sellerUuid, Instant startAt, Instant endAt, int version, Instant createdAt,
                                  int viewCount, int currentBid, int minimumBid, String description, boolean isDirectDeal,
                                  String productCondition, int categoryId, String categoryName, String categoryDescription,
                                  String categoryThumbnailKey, List<Long> tagId, List<String> tagNames) {

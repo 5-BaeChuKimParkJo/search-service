@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.searchservice.adapter.in.kafka.event.Image;
 
+import java.time.Instant;
 import java.util.List;
 
 @Getter
@@ -22,10 +23,10 @@ public class GetAuctionSearchResponseDto {
     private String thumbnailUrl;
     private List<Image> images;
     private String sellerUuid;
-    private String startAt;
-    private String endAt;
+    private Instant startAt;
+    private Instant endAt;
     private int version;
-    private String createdAt;
+    private Instant createdAt;
     private int viewCount;
     private int currentBid;
     private int minimumBid;
@@ -45,8 +46,8 @@ public class GetAuctionSearchResponseDto {
     @Builder
     public GetAuctionSearchResponseDto(String id, String auctionUuid, String auctionTitle, String auctionDescription,
                                        String status, String thumbnailKey, String directDealLocation, String thumbnailUrl,
-                                       List<Image> images, String sellerUuid, String startAt, String endAt, int version,
-                                       String createdAt, int viewCount, int currentBid, int minimumBid, String description,
+                                       List<Image> images, String sellerUuid, Instant startAt, Instant endAt, int version,
+                                       Instant createdAt, int viewCount, int currentBid, int minimumBid, String description,
                                        boolean isDirectDeal, String productCondition, int categoryId, String categoryName,
                                        String categoryDescription, String categoryThumbnailKey, List<Long> tagId,
                                        List<String> tagNames) {

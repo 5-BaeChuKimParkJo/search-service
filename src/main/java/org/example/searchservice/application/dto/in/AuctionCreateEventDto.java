@@ -4,19 +4,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.searchservice.adapter.in.kafka.event.Image;
 
+import java.time.Instant;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
 public class AuctionCreateEventDto {
 
-    private String endAt;
+    private Instant endAt;
     private String title;
     private List<Image> images;
     private List<Long> tagIds;
-    private String startAt;
+    private Instant startAt;
     private int version;
-    private String createdAt;
+    private Instant createdAt;
     private int viewCount;
     private int categoryId;
     private int currentBid;

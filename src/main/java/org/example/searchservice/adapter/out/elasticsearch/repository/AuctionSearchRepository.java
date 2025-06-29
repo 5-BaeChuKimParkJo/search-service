@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.searchservice.adapter.out.elasticsearch.entity.AuctionSearchDocument;
 import org.example.searchservice.adapter.out.elasticsearch.mapper.AuctionSearchDocumentMapper;
+import org.example.searchservice.adapter.out.elasticsearch.querybuilder.AuctionSearchQueryBuilder;
 import org.example.searchservice.application.dto.in.*;
 import org.example.searchservice.application.dto.out.GetAuctionSearchResponseDto;
 import org.example.searchservice.application.port.out.AuctionSearchRepositoryPort;
@@ -28,66 +29,25 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
     private final AuctionSearchElasticRepository auctionSearchElasticRepository;
     private final AuctionSearchDocumentMapper auctionSearchDocumentMapper;
     private final ElasticsearchOperations elasticsearchOperations;
+    private final AuctionSearchQueryBuilder auctionSearchQueryBuilder;
 
     @Override
     public List<GetAuctionSearchResponseDto> search(GetAuctionSearchRequestDto getAuctionSearchRequestDto) {
 
-        BoolQuery.Builder boolBuilder = QueryBuilders.bool();
-
-        if (getAuctionSearchRequestDto.getAuctionTitle() != null && !getAuctionSearchRequestDto.getAuctionTitle().isEmpty()) {
-            boolBuilder.must(q -> q.match(m -> m
-                    .field(("auctionTitle"))
-                    .query(getAuctionSearchRequestDto.getAuctionTitle()
-            )));
-        }
-
-        if (getAuctionSearchRequestDto.getCategoryName() != null && !getAuctionSearchRequestDto.getCategoryName().isEmpty()) {
-            boolBuilder.filter(q -> q.term(t -> t
-                    .field("categoryName")
-                    .value(getAuctionSearchRequestDto.getCategoryName())));
-        }
-
-        log.info("Searching for auctions with title: {}, category: {}, tags: {}, direct deal: {}, condition: {}",
-                getAuctionSearchRequestDto.getAuctionTitle(),
-                getAuctionSearchRequestDto.getCategoryName(),
-                getAuctionSearchRequestDto.getTagNames(),
-                getAuctionSearchRequestDto.isDirectDeal(),
-                getAuctionSearchRequestDto.getProductCondition());
-
-        if (getAuctionSearchRequestDto.getTagNames() != null && !getAuctionSearchRequestDto.getTagNames().isEmpty()) {
-            boolBuilder.filter(q -> q.terms(t -> t
-                    .field("tagNames")
-                    .terms(v -> v.value(
-                            getAuctionSearchRequestDto.getTagNames().stream()
-                                    .map(FieldValue::of)
-                                    .toList()
-                    ))
-            ));
-        }
-
-        if (getAuctionSearchRequestDto.isDirectDeal()) {
-            boolBuilder.filter(q -> q.term(t -> t
-                    .field("isDirectDeal")
-                    .value(getAuctionSearchRequestDto.isDirectDeal())));
-        }
-
-        if (getAuctionSearchRequestDto.getProductCondition() != null && !getAuctionSearchRequestDto.getProductCondition().isEmpty()) {
-            boolBuilder.filter(q -> q.term(t -> t
-                    .field("productCondition")
-                    .value(getAuctionSearchRequestDto.getProductCondition())));
-        }
-
-        NativeQuery nativeQuery = NativeQuery.builder()
-                .withQuery(boolBuilder.build()._toQuery())
-                .build();
+        NativeQuery nativeQuery = auctionSearchQueryBuilder.buildAuctionsSearchQuery(getAuctionSearchRequestDto);
 
         log.info("Executing search with query: {}", nativeQuery.getQuery());
+        log.info("Sort: {}", nativeQuery.getSort());
+        log.info("SearchAfter: {}", nativeQuery.getSearchAfter());
 
         SearchHits<AuctionSearchDocument> hits =
                 elasticsearchOperations.search(nativeQuery, AuctionSearchDocument.class);
 
         log.info("Search hits found: {}", hits.getTotalHits());
-        log.info("Search hits content: {}", hits.getSearchHits().stream().map(hit -> hit.getContent().getSellerUuid()).toList());
+
+        log.info("Search hits content: {}", hits.getSearchHits().stream()
+                .map(hit -> hit.getContent().getAuctionTitle())
+                .toList());
 
         return hits.getSearchHits().stream()
                 .map(hit -> auctionSearchDocumentMapper.toGetAuctionSearchResponseDto(hit.getContent()))

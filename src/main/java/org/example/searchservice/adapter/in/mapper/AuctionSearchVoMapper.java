@@ -36,6 +36,8 @@ public class AuctionSearchVoMapper {
                 .tagNames(getAuctionSearchRequestVo.getTagNames())
                 .isDirectDeal(getAuctionSearchRequestVo.isDirectDeal())
                 .productCondition(getAuctionSearchRequestVo.getProductCondition())
+                .sortBy(getAuctionSearchRequestVo.getSortBy())
+                .searchAfter(getAuctionSearchRequestVo.getSearchAfter())
                 .build();
 
     }

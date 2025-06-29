@@ -37,7 +37,10 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
                             AuthScope.ANY,
                             new UsernamePasswordCredentials(username, password)
                     );
-                    return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+                    return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
+                            .setKeepAliveStrategy(
+                                    (response, context) -> 60000L // Set keep-alive to 60 seconds
+                            );
                 })
                 .build();
         return new ElasticsearchClient(new RestClientTransport(restClient, new JacksonJsonpMapper()));

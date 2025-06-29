@@ -22,5 +22,15 @@ management:
   endpoint:
     health:
       show-details: always
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+    config-url: /search-service/v3/api-docs/swagger-config
+    url: /search-service/v3/api-docs
+
 server:
   port: 8080

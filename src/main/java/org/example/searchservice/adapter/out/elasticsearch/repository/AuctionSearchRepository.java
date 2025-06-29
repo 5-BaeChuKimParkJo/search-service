@@ -28,7 +28,6 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
     private final AuctionSearchElasticRepository auctionSearchElasticRepository;
     private final AuctionSearchDocumentMapper auctionSearchDocumentMapper;
     private final ElasticsearchOperations elasticsearchOperations;
-    private final ElasticsearchTemplate elasticsearchTemplate;
 
     @Override
     public List<GetAuctionSearchResponseDto> search(GetAuctionSearchRequestDto getAuctionSearchRequestDto) {

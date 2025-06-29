@@ -3,6 +3,8 @@ spring:
     uris: ${ELASTICSEARCH_URL}
     connection-timeout: 5s
     socket-timeout: 10s
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
 
   kafka:
     bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}

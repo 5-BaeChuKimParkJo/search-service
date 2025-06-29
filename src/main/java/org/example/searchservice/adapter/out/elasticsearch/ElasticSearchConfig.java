@@ -6,7 +6,10 @@ import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import lombok.NonNull;
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.elasticsearch.client.RestClient;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,34 +22,24 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
     @Value("${spring.elasticsearch.uris}")
     String url;
 
-//    @Bean
-//    public RestClient restClient() {
-//        return RestClient.builder(HttpHost.create(url)).build();
-//    }
-//
-//    /**
-//     * Native Elasticsearch Java API Client (8.x 이상)
-//     */
-//    @Bean
-//    public ElasticsearchClient elasticsearchClient(RestClient restClient) {
-//        RestClientTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
-//        return new ElasticsearchClient(transport);
-//    }
-//
-//    /**
-//     * Spring Data Elasticsearch용 설정 (Repository 자동 주입용)
-//     */
-//    @Override
-//    @NonNull
-//    public ClientConfiguration clientConfiguration() {
-//        return ClientConfiguration.builder()
-//                .connectedTo(url)
-//                .build();
-//    }
+    @Value("${spring.elasticsearch.username}")
+    String username;
+
+    @Value("${spring.elasticsearch.password}")
+    String password;
 
     @Bean
     public ElasticsearchClient elasticsearchClient() {
-        RestClient restClient = RestClient.builder(url).build();
+        RestClient restClient = RestClient.builder(HttpHost.create(url))
+                .setHttpClientConfigCallback(httpClientBuilder -> {
+                    BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+                    credentialsProvider.setCredentials(
+                            AuthScope.ANY,
+                            new UsernamePasswordCredentials(username, password)
+                    );
+                    return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+                })
+                .build();
         return new ElasticsearchClient(new RestClientTransport(restClient, new JacksonJsonpMapper()));
     }
 
@@ -55,6 +48,7 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
     public ClientConfiguration clientConfiguration() {
         return ClientConfiguration.builder()
                 .connectedTo(url)
+                .withBasicAuth(username, password)
                 .build();
     }
 }

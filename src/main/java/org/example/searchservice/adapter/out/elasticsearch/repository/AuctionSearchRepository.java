@@ -47,6 +47,13 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
                     .value(getAuctionSearchRequestDto.getCategoryName())));
         }
 
+        log.info("Searching for auctions with title: {}, category: {}, tags: {}, direct deal: {}, condition: {}",
+                getAuctionSearchRequestDto.getAuctionTitle(),
+                getAuctionSearchRequestDto.getCategoryName(),
+                getAuctionSearchRequestDto.getTagNames(),
+                getAuctionSearchRequestDto.isDirectDeal(),
+                getAuctionSearchRequestDto.getProductCondition());
+
         if (getAuctionSearchRequestDto.getTagNames() != null && !getAuctionSearchRequestDto.getTagNames().isEmpty()) {
             boolBuilder.filter(q -> q.terms(t -> t
                     .field("tagNames")
@@ -73,6 +80,8 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
         NativeQuery nativeQuery = NativeQuery.builder()
                 .withQuery(boolBuilder.build()._toQuery())
                 .build();
+
+        log.info("Executing search with query: {}", nativeQuery.getQuery());
 
         SearchHits<AuctionSearchDocument> hits =
                 elasticsearchOperations.search(nativeQuery, AuctionSearchDocument.class);

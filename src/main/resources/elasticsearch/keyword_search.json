@@ -1,0 +1,62 @@
+{
+  "settings": {
+    "analysis": {
+      "char_filter": {
+        "remove_punctuation": {
+          "type": "pattern_replace",
+          "pattern": "[^가-힣a-zA-Z0-9\\s]",
+          "replacement": " "
+        }
+      },
+      "filter": {
+        "suggest_edge_ngram": {
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 50
+        }
+      },
+      "tokenizer": {
+        "jaso_tokenizer": {               // 자소 분해 토크나이저(플러그인)
+          "type": "jaso_tokenizer",
+          "mistype": true,
+          "chosung": true
+        },
+        "edge_ngram_tokenizer": {         // prefix 자동완성용
+          "type": "edge_ngram",
+          "min_gram": 1,
+          "max_gram": 50,
+          "token_chars": ["letter", "digit"]
+        }
+      },
+      "analyzer": {
+        "suggest_index_analyzer": {       // keyword 필드용
+          "type": "custom",
+          "char_filter": ["remove_punctuation"],
+          "tokenizer": "edge_ngram_tokenizer",
+          "filter": ["lowercase"]
+        },
+        "suggest_sub_analyzer": {         // keyword.jaso 필드용
+          "type": "custom",
+          "tokenizer": "jaso_tokenizer",
+          "filter": ["suggest_edge_ngram"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "keyword": {
+        "type": "text",
+        "analyzer": "suggest_index_analyzer",   // n-gram prefix
+        "fields": {
+          "jaso": {
+            "type": "text",
+            "analyzer": "suggest_sub_analyzer" // 자소 + edge-ngram
+          }
+        }
+      },
+      "weight": {  "type": "integer"  },
+      "auctionUuids": { "type": "keyword" }
+    }
+  }
+}

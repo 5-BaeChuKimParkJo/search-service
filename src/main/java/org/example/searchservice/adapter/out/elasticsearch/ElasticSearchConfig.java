@@ -4,6 +4,9 @@ package org.example.searchservice.adapter.out.elasticsearch;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.NonNull;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -13,6 +16,7 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
 
@@ -29,7 +33,15 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
     String password;
 
     @Bean
+    @Primary
     public ElasticsearchClient elasticsearchClient() {
+
+        ObjectMapper objectMapper = new ObjectMapper()
+                .registerModule(new JavaTimeModule())
+                .disable(MapperFeature.REQUIRE_HANDLERS_FOR_JAVA8_TIMES);
+
+        JacksonJsonpMapper jsonpMapper = new JacksonJsonpMapper(objectMapper);
+
         RestClient restClient = RestClient.builder(HttpHost.create(url))
                 .setHttpClientConfigCallback(httpClientBuilder -> {
                     BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
@@ -43,7 +55,11 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
                             );
                 })
                 .build();
-        return new ElasticsearchClient(new RestClientTransport(restClient, new JacksonJsonpMapper()));
+
+        RestClientTransport transport = new RestClientTransport(restClient, jsonpMapper);
+
+
+        return new ElasticsearchClient(transport);
     }
 
     @Override

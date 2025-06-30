@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 public class SuggestAuctionSearchResponseVo {
 
     private String keyword;
+    private int weight;
 
     @Builder
-    public SuggestAuctionSearchResponseVo(String keyword) {
+    public SuggestAuctionSearchResponseVo(String keyword, int weight) {
         this.keyword = keyword;
+        this.weight = weight;
     }
 
 }

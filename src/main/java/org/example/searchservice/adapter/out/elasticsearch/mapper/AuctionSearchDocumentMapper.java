@@ -8,6 +8,7 @@ import org.example.searchservice.application.dto.in.CategoryResponseDto;
 import org.example.searchservice.application.dto.in.CreateAuctionSearchRequestDto;
 import org.example.searchservice.application.dto.in.TagResponseDto;
 import org.example.searchservice.application.dto.out.GetAuctionSearchResponseDto;
+import org.example.searchservice.application.dto.out.SuggestAuctionSearchResponseDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class AuctionSearchDocumentMapper {
                 .status(createAuctionSearchRequestDto.getStatus())
                 .thumbnailKey(createAuctionSearchRequestDto.getThumbnailKey())
                 .directDealLocation(createAuctionSearchRequestDto.getDirectDealLocation())
+                .createdAt(java.time.Instant.now())
                 .build();
     }
 
@@ -94,4 +96,11 @@ public class AuctionSearchDocumentMapper {
                 .tagNames(auctionSearchDocument.getTagNames())
                 .build();
     }
+
+    public SuggestAuctionSearchResponseDto toSuggestAuctionSearchResponseDto(String auctionTitle) {
+        return SuggestAuctionSearchResponseDto.builder()
+                .keyword(auctionTitle)
+                .build();
+    }
+
 }

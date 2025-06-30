@@ -76,6 +76,7 @@ public class AuctionSearchVoMapper {
     public SuggestAuctionSearchResponseVo toSuggestAuctionSearchResponseVo(SuggestAuctionSearchResponseDto suggestAuctionSearchResponseDto) {
         return SuggestAuctionSearchResponseVo.builder()
                 .keyword(suggestAuctionSearchResponseDto.getKeyword())
+                .weight(suggestAuctionSearchResponseDto.getWeight())
                 .build();
     }
 }

@@ -8,9 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.searchservice.adapter.out.elasticsearch.entity.AuctionSearchDocument;
 import org.example.searchservice.adapter.out.elasticsearch.mapper.AuctionSearchDocumentMapper;
+import org.example.searchservice.adapter.out.elasticsearch.mapper.KeywordSearchDocumentMapper;
 import org.example.searchservice.adapter.out.elasticsearch.querybuilder.AuctionSearchQueryBuilder;
 import org.example.searchservice.application.dto.in.*;
 import org.example.searchservice.application.dto.out.GetAuctionSearchResponseDto;
+import org.example.searchservice.application.dto.out.SuggestAuctionSearchResponseDto;
 import org.example.searchservice.application.port.out.AuctionSearchRepositoryPort;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
@@ -30,6 +32,7 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
     private final AuctionSearchDocumentMapper auctionSearchDocumentMapper;
     private final ElasticsearchOperations elasticsearchOperations;
     private final AuctionSearchQueryBuilder auctionSearchQueryBuilder;
+    private final KeywordSearchDocumentMapper keywordSearchDocumentMapper;
 
     @Override
     public List<GetAuctionSearchResponseDto> search(GetAuctionSearchRequestDto getAuctionSearchRequestDto) {
@@ -80,6 +83,18 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
         );
     }
 
+    @Override
+    public List<SuggestAuctionSearchResponseDto> suggest(String keyword) {
+
+        NativeQuery nativeQuery = auctionSearchQueryBuilder.buildAuctionsSuggestQuery(keyword);
+
+        SearchHits<AuctionSearchDocument> hits =
+                elasticsearchOperations.search(nativeQuery, AuctionSearchDocument.class);
+
+        return hits.getSearchHits().stream()
+                .map(hit -> auctionSearchDocumentMapper.toSuggestAuctionSearchResponseDto(hit.getContent().getAuctionTitle()))
+                .toList();
+    }
 
 
 }

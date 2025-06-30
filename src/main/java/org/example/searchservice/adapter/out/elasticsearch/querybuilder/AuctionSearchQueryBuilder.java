@@ -98,22 +98,45 @@ public class AuctionSearchQueryBuilder {
                 default:
                     break;
             }
+
+            log.info("Sort: {}", sort);
+
+            return NativeQuery.builder()
+                    .withQuery(boolBuilder.build()._toQuery())
+                    .withSort(sort)
+                    .withSearchAfter(searchAfter)
+                    .build();
         }
 
         else {
+
+            log.info("Sort: {}", sort);
+
             return NativeQuery.builder()
                     .withQuery(boolBuilder.build()._toQuery())
                     .build();
         }
 
-        log.info("Sort: {}", sort);
+
+    }
+
+    public NativeQuery buildAuctionsSuggestQuery(String keyword) {
+
+        BoolQuery.Builder boolBuilder = QueryBuilders.bool();
+
+        if (keyword != null && !keyword.isEmpty()) {
+            boolBuilder.must(q -> q.match(m -> m
+                    .field("tagNames")
+                    .query(keyword)
+            ));
+        }
 
         return NativeQuery.builder()
                 .withQuery(boolBuilder.build()._toQuery())
-                .withSort(sort)
-                .withSearchAfter(searchAfter)
+                .withMaxResults(5)
                 .build();
-
     }
+
+
 
 }

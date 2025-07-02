@@ -1,6 +1,7 @@
 package org.example.searchservice.adapter.out.elasticsearch.repository;
 
 
+import co.elastic.clients.elasticsearch._types.ElasticsearchException;
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
@@ -14,6 +15,9 @@ import org.example.searchservice.application.dto.in.*;
 import org.example.searchservice.application.dto.out.GetAuctionSearchResponseDto;
 import org.example.searchservice.application.dto.out.SuggestAuctionSearchResponseDto;
 import org.example.searchservice.application.port.out.AuctionSearchRepositoryPort;
+import org.example.searchservice.common.exception.BaseException;
+import org.example.searchservice.common.response.BaseResponseStatus;
+import org.springframework.data.elasticsearch.UncategorizedElasticsearchException;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -37,50 +41,62 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
     @Override
     public List<GetAuctionSearchResponseDto> search(GetAuctionSearchRequestDto getAuctionSearchRequestDto) {
 
-        NativeQuery nativeQuery = auctionSearchQueryBuilder.buildAuctionsSearchQuery(getAuctionSearchRequestDto);
 
-        log.info("Executing search with query: {}", nativeQuery.getQuery());
-        log.info("Sort: {}", nativeQuery.getSort());
-        log.info("SearchAfter: {}", nativeQuery.getSearchAfter());
+            NativeQuery nativeQuery = auctionSearchQueryBuilder.buildAuctionsSearchQuery(getAuctionSearchRequestDto);
 
-        SearchHits<AuctionSearchDocument> hits =
-                elasticsearchOperations.search(nativeQuery, AuctionSearchDocument.class);
+            log.info("Executing search with query: {}", nativeQuery.getQuery());
+            log.info("Search Sort {}", nativeQuery.getSort());
+            log.info("Search After {}", nativeQuery.getSearchAfter());
 
-        log.info("Search hits found: {}", hits.getTotalHits());
+            try {
+                SearchHits<AuctionSearchDocument> hits =
+                        elasticsearchOperations.search(nativeQuery, AuctionSearchDocument.class);
 
-        log.info("Search hits content: {}", hits.getSearchHits().stream()
-                .map(hit -> hit.getContent().getAuctionTitle())
-                .toList());
+                return hits.getSearchHits().stream()
+                        .map(hit -> auctionSearchDocumentMapper.toGetAuctionSearchResponseDto(hit.getContent()))
+                        .toList();
 
-        return hits.getSearchHits().stream()
-                .map(hit -> auctionSearchDocumentMapper.toGetAuctionSearchResponseDto(hit.getContent()))
-                .toList();
+            } catch (ElasticsearchException | UncategorizedElasticsearchException e) {
+                    log.error("Elasticsearch error occurred: {}", e.getMessage(), e);
+                    throw new BaseException(BaseResponseStatus.FAILED_AUCTION_SEARCH);
+                }
+
 
     }
 
     @Override
     public void save(CreateAuctionSearchRequestDto createAuctionSearchRequestDto) {
-        auctionSearchElasticRepository.save(
-                auctionSearchDocumentMapper.toAuctionSearchDocument(createAuctionSearchRequestDto)
-        );
-    }
-
-    @Override
-    public void saveMessage(String message) {
-        // This method is not implemented in the original code, but can be used for logging or other purposes
-        log.info("Saving message: {}", message);
-
+        try {
+            auctionSearchElasticRepository.save(
+                    auctionSearchDocumentMapper.toAuctionSearchDocument(createAuctionSearchRequestDto)
+            );
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseStatus.FAILED_AUCTION_SAVE);
+        }
     }
 
     @Override
     public void saveAuction(AuctionCreateEventDto auctionCreateEventDto, CategoryResponseDto categoryResponseDto, List<TagResponseDto> tagResponseDtoList) {
-        auctionSearchElasticRepository.save(
-                auctionSearchDocumentMapper.toAuctionSearchDocument(
-                        auctionCreateEventDto,
-                        categoryResponseDto,
-                        tagResponseDtoList
-                )
-        );
+
+//        auctionSearchElasticRepository.findByAuctionUuid(auctionCreateEventDto.getAuctionUuid())
+//                .ifPresent(existingDocument -> {
+//                    log.info("Auction with UUID {} already exists, skipping save.", auctionCreateEventDto.getAuctionUuid());
+//                    throw new BaseException(BaseResponseStatus.AUCTION_ALREADY_EXISTS);
+//                });
+
+        try {
+            auctionSearchElasticRepository.save(
+                    auctionSearchDocumentMapper.toAuctionSearchDocument(
+                            auctionCreateEventDto,
+                            categoryResponseDto,
+                            tagResponseDtoList
+                    )
+            );
+            log.info("Auction with UUID {} saved successfully.", auctionCreateEventDto.getAuctionUuid());
+            log.info("Category: {}", auctionCreateEventDto.getTitle());
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseStatus.FAILED_AUCTION_SAVE);
+        }
     }
 
     @Override

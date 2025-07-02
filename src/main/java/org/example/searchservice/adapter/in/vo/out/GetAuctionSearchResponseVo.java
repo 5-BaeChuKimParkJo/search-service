@@ -43,6 +43,8 @@ public class GetAuctionSearchResponseVo {
     private List<Long> tagId;
     private List<String> tagNames;
 
+    private Object nextCursor;
+
 
     @Builder
     public GetAuctionSearchResponseVo(String id, String auctionUuid, String auctionTitle, String auctionDescription,
@@ -51,7 +53,7 @@ public class GetAuctionSearchResponseVo {
                                       Instant createdAt, int viewCount, int currentBid, int minimumBid, String description,
                                       boolean isDirectDeal, String productCondition, int categoryId, String categoryName,
                                       String categoryDescription, String categoryThumbnailKey, List<Long> tagId,
-                                      List<String> tagNames) {
+                                      List<String> tagNames, Object nextCursor) {
         this.id = id;
         this.auctionUuid = auctionUuid;
         this.auctionTitle = auctionTitle;
@@ -78,5 +80,6 @@ public class GetAuctionSearchResponseVo {
         this.categoryThumbnailKey = categoryThumbnailKey;
         this.tagId = tagId;
         this.tagNames = tagNames;
+        this.nextCursor = nextCursor;
     }
 }

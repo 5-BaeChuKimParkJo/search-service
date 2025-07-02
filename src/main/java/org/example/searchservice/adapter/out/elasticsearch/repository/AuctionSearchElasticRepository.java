@@ -11,5 +11,7 @@ public interface AuctionSearchElasticRepository extends ElasticsearchRepository<
 
     List<AuctionSearchDocument> findByAuctionTitle(String title);
 
+    Optional<AuctionSearchDocument> findByAuctionUuid(String auctionUuid);
+
 
 }

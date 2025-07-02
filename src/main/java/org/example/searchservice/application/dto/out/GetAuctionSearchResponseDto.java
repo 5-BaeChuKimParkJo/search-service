@@ -39,6 +39,7 @@ public class GetAuctionSearchResponseDto {
     private String categoryName;
     private String categoryDescription;
     private String categoryThumbnailKey;
+
     //tag
     private List<Long> tagId;
     private List<String> tagNames;

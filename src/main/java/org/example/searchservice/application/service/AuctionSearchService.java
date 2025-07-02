@@ -15,6 +15,8 @@ import org.example.searchservice.application.dto.out.SuggestAuctionSearchRespons
 import org.example.searchservice.application.port.in.AuctionSearchUseCase;
 import org.example.searchservice.application.port.out.AuctionSearchRepositoryPort;
 import org.example.searchservice.application.port.out.KeywordSearchRepositoryPort;
+import org.example.searchservice.common.exception.BaseException;
+import org.example.searchservice.common.response.BaseResponseStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -52,7 +54,13 @@ public class AuctionSearchService implements AuctionSearchUseCase {
     @Override
     public void saveAuction(AuctionCreateEventDto auctionCreateEventDto) {
 
-        CategoryResponseDto categoryResponseDto = categoryClient.getCategory(auctionCreateEventDto.getCategoryId());
+        CategoryResponseDto categoryResponseDto = null;
+        try {
+            categoryResponseDto = categoryClient.getCategory(auctionCreateEventDto.getCategoryId());
+        } catch (Exception e) {
+            log.info("Failed to fetch category with ID: {}", auctionCreateEventDto.getCategoryId());
+            throw new BaseException(BaseResponseStatus.FAILED_TO_FEIGHN_CATEGORY);
+        }
 
         List<TagResponseDto> tagResponseDtoList = new ArrayList<>();
 
@@ -62,7 +70,8 @@ public class AuctionSearchService implements AuctionSearchUseCase {
                         TagResponseDto tagResponseDto = tagClient.getTagById(tagId);
                         tagResponseDtoList.add(tagResponseDto);
                     } catch (Exception e) {
-                        log.error("Error fetching tag with ID {}: {}", tagId, e.getMessage());
+                        log.info("Failed to fetch tag with ID: {}", tagId);
+                        throw new BaseException(BaseResponseStatus.FAILED_TO_FEIGHN_TAG);
                     }
                 });
 

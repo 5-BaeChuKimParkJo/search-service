@@ -14,8 +14,6 @@ public interface AuctionSearchRepositoryPort {
 
     void save(CreateAuctionSearchRequestDto createAuctionSearchRequestDto);
 
-    void saveMessage(String message);
-
     void saveAuction(AuctionCreateEventDto auctionCreateEventDto, CategoryResponseDto categoryResponseDto, List<TagResponseDto> tagResponseDtoList);
     List<SuggestAuctionSearchResponseDto> suggest(String keyword);
 

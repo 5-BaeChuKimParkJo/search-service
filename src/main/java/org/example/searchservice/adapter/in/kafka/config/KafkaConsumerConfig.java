@@ -43,5 +43,27 @@ public class KafkaConsumerConfig {
         return factory;
     }
 
+//    @Bean
+//    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+//        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+//        factory.setConsumerFactory(consumerFactory());
+//        factory.setBatchListener(true); // 핵심 설정!
+//        factory.setConcurrency(3);
+//        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
+//        return factory;
+//    }
+
+//    @Bean
+//    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaBatchListenerContainerFactory(
+//            ConsumerFactory<String, String> consumerFactory
+//    ) {
+//        ConcurrentKafkaListenerContainerFactory<String, String> factory =
+//                new ConcurrentKafkaListenerContainerFactory<>();
+//        factory.setConsumerFactory(consumerFactory);
+//        factory.setBatchListener(true); // 핵심 설정!
+//        factory.setConcurrency(3);      // 병렬 처리할 컨슈머 수 (선택)
+//        return factory;
+//    }
+
 
 }

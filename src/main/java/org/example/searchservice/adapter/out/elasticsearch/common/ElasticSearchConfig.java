@@ -1,4 +1,4 @@
-package org.example.searchservice.adapter.out.elasticsearch;
+package org.example.searchservice.adapter.out.elasticsearch.common;
 
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;

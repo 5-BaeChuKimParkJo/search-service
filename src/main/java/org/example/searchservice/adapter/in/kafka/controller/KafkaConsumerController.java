@@ -53,32 +53,32 @@ public class KafkaConsumerController {
 //
 //            List<AuctionEvent> auctionEvents = objectMapper.readValue(message, AuctionEvent.class);
 //
-//            //
-////            Map<String, AuctionEvent> map  = null
-////            for (AuctionEvent auctionEvent:auctionEvents) {
-////
-////                map.put(auctionEvent.getAuctionUuid(), auctionEvent);
-////            }
-////
-////            List<AuctionEvent> dList = null
-////            List<AuctionEvent> cuList = null
-////
-////        for (AuctionEvent auctionEvent : map.values()) {
-////
-////                if (auctionEvent.getOp().equals("d")) {
 //
-////                    auctionSearchUseCase.deleteAuction(auctionEvent.getAuctionUuid());
-////                } else {
-////                    AuctionCreateEventDto auctionCreateEventDto = auctionMessageMapper.toAuctionCreateEventDto(auctionEvent);
-////                    auctionSearchUseCase.saveAuction(auctionCreateEventDto);
-////                }
-////            }
-////            AuctionCreateEventDto auctionCreateEventDto = auctionMessageMapper.toAuctionCreateEventDto(message);
-////
-////            if (auctionEvent.getOp() == "d") {
-////                auctionSearchUseCase.deleteAuction(auctionCreateEventDto.getAuctionUuid());
-////            }   else {
-////                auctionSearchUseCase.saveAuction(auctionCreateEventDto);
-////            }
+//            Map<String, AuctionEvent> map  = null
+//            for (AuctionEvent auctionEvent:auctionEvents) {
+//
+//                map.put(auctionEvent.getAuctionUuid(), auctionEvent);
+//            }
+//
+//            List<AuctionEvent> dList = null
+//            List<AuctionEvent> cuList = null
+//
+//        for (AuctionEvent auctionEvent : map.values()) {
+//
+//                if (auctionEvent.getOp().equals("d")) {
+//
+//                    auctionSearchUseCase.deleteAuction(auctionEvent.getAuctionUuid());
+//                } else {
+//                    AuctionCreateEventDto auctionCreateEventDto = auctionMessageMapper.toAuctionCreateEventDto(auctionEvent);
+//                    auctionSearchUseCase.saveAuction(auctionCreateEventDto);
+//                }
+//            }
+//            AuctionCreateEventDto auctionCreateEventDto = auctionMessageMapper.toAuctionCreateEventDto(message);
+//
+//            if (auctionEvent.getOp() == "d") {
+//                auctionSearchUseCase.deleteAuction(auctionCreateEventDto.getAuctionUuid());
+//            }   else {
+//                auctionSearchUseCase.saveAuction(auctionCreateEventDto);
+//            }
 //    }
 //}

@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.searchservice.adapter.in.mapper.AuctionSearchVoMapper;
 import org.example.searchservice.adapter.in.vo.in.CreateAuctionSearchRequestVo;
 import org.example.searchservice.adapter.in.vo.in.GetAuctionSearchRequestVo;
-import org.example.searchservice.adapter.in.vo.out.NextCursor;
+import org.example.searchservice.adapter.in.vo.out.GetAuctionSearchResponseWrapperVo;
 import org.example.searchservice.adapter.in.vo.out.SuggestAuctionSearchResponseVo;
 import org.example.searchservice.adapter.in.vo.out.GetAuctionSearchResponseVo;
 import org.example.searchservice.application.dto.out.GetAuctionSearchResponseDto;
@@ -29,18 +29,18 @@ public class AuctionSearchController {
 
     @Operation(summary = "Search for auctions based on various criteria")
     @GetMapping
-    public List<GetAuctionSearchResponseVo> getAuctionSearchList(
+    public GetAuctionSearchResponseWrapperVo getAuctionSearchList(
             @ModelAttribute GetAuctionSearchRequestVo getAuctionSearchRequestVo
     ){
 
         log.info("Received request to search auctions with parameters: {}", getAuctionSearchRequestVo.getAuctionTitle());
-        List<GetAuctionSearchResponseDto> getAuctionSearchResponseDto = auctionSearchUseCase.searchAuctions(
+        List<GetAuctionSearchResponseDto> getAuctionSearchResponseDtoList = auctionSearchUseCase.searchAuctions(
                 auctionSearchVoMapper.toGetAuctionSearchRequestDto(getAuctionSearchRequestVo)
         );
 
-        return getAuctionSearchResponseDto.stream()
-                .map(auctionSearchVoMapper::toGetAuctionSearchResponseVo)
-                .toList();
+        return auctionSearchVoMapper.toGetAuctionSearchResponseWrapperVo(
+                getAuctionSearchResponseDtoList
+        );
     }
 
     @Operation(summary = "Create a new auction search, only for TEST")

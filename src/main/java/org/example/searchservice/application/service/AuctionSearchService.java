@@ -1,12 +1,7 @@
 package org.example.searchservice.application.service;
 
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.core.SearchRequest;
-import co.elastic.clients.elasticsearch.core.SearchResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.searchservice.adapter.out.elasticsearch.entity.AuctionSearchDocument;
-import org.example.searchservice.adapter.out.elasticsearch.querybuilder.AuctionSearchQueryBuilder;
 import org.example.searchservice.adapter.out.feign.CategoryClient;
 import org.example.searchservice.adapter.out.feign.TagClient;
 import org.example.searchservice.application.dto.in.*;
@@ -19,7 +14,6 @@ import org.example.searchservice.common.exception.BaseException;
 import org.example.searchservice.common.response.BaseResponseStatus;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.*;
 
 

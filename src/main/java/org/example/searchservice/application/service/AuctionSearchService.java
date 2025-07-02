@@ -2,6 +2,10 @@ package org.example.searchservice.application.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.searchservice.adapter.in.kafka.event.AuctionBatchEvent;
+import org.example.searchservice.adapter.in.kafka.event.AuctionCreateEvent;
+import org.example.searchservice.adapter.in.kafka.event.AuctionEvent;
+import org.example.searchservice.adapter.in.kafka.mapper.AuctionMessageMapper;
 import org.example.searchservice.adapter.out.feign.CategoryClient;
 import org.example.searchservice.adapter.out.feign.TagClient;
 import org.example.searchservice.application.dto.in.*;
@@ -24,6 +28,7 @@ public class AuctionSearchService implements AuctionSearchUseCase {
 
     private final AuctionSearchRepositoryPort auctionSearchRepositoryPort;
     private final KeywordSearchRepositoryPort keywordSearchRepositoryPort;
+    private final AuctionMessageMapper auctionMessageMapper;
     private final CategoryClient categoryClient;
     private final TagClient tagClient;
 
@@ -36,6 +41,17 @@ public class AuctionSearchService implements AuctionSearchUseCase {
     @Override
     public void createAuctionSearch(CreateAuctionSearchRequestDto createAuctionSearchRequestDto) {
         auctionSearchRepositoryPort.save(createAuctionSearchRequestDto);
+    }
+
+    @Override
+    public void saveAuctionBulk(List<AuctionEvent> auctionEventList) {
+
+        HashMap<String, AuctionBatchEvent> map = new HashMap<>();
+
+        auctionEventList.stream()
+                .forEach(auctionEvent -> {
+                });
+
     }
 
     @Override

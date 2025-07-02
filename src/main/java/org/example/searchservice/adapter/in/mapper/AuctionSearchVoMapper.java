@@ -94,9 +94,6 @@ public class AuctionSearchVoMapper {
                         .lastAuctionViewCount(getAuctionSearchResponseVoList.get(getAuctionSearchResponseVoList.size() - 1).getViewCount())
                         .build();
 
-        log.info("Next cursor created with last auction UUID: {}, created at: {}, current bid: {}, view count: {}",
-                nextCursorVo.getLastAuctionUuid(), nextCursorVo.getLastAuctionCreatedAt(),
-                nextCursorVo.getLastAuctionCurrentBid(), nextCursorVo.getLastAuctionViewCount());
 
         return GetAuctionSearchResponseWrapperVo.builder()
                 .getAuctionSearchResponseVoList(getAuctionSearchResponseVoList)

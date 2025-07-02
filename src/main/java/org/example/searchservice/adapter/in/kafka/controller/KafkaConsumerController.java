@@ -21,6 +21,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -32,28 +33,35 @@ public class KafkaConsumerController {
     private final ObjectMapper objectMapper;
 
 
-    @KafkaListener(topics = "auction-service.outbox", containerFactory = "kafkaListenerContainerFactory")
-    public void consumeAuctionSearch( @Header(KafkaHeaders.RECEIVED_KEY) String key,
-                                     @Payload String message) throws JsonProcessingException {
-
-        log.info("Received message: {}", message);
-        log.info("Received key: {}", key);
-
-        AuctionEvent auctionEvent = objectMapper.readValue(message, AuctionEvent.class);
-
-
-        AuctionCreateEventDto auctionCreateEventDto = auctionMessageMapper.toAuctionCreateEventDto(message);
-        auctionSearchUseCase.saveAuction(auctionCreateEventDto);
-    }
-    }
-
 //    @KafkaListener(topics = "auction-service.outbox", containerFactory = "kafkaListenerContainerFactory")
-//    public void consumeAuctionSearch( @Header(KafkaHeaders.RECEIVED_KEY) List<String> keys,
-//                                     @Payload List<String> messages) throws JsonProcessingException {
+//    public void consumeAuctionSearch( @Header(KafkaHeaders.RECEIVED_KEY) String key,
+//                                     @Payload String message) throws JsonProcessingException {
 //
-//            List<AuctionEvent> auctionEvents = objectMapper.readValue(message, AuctionEvent.class);
+//        log.info("Received message: {}", message);
+//        log.info("Received key: {}", key);
+//
+//        AuctionEvent auctionEvent = objectMapper.readValue(message, AuctionEvent.class);
 //
 //
+//        AuctionCreateEventDto auctionCreateEventDto = auctionMessageMapper.toAuctionCreateEventDto(message);
+//        auctionSearchUseCase.saveAuction(auctionCreateEventDto);
+//    }
+//    }
+
+    @KafkaListener(topics = "auction-service.outbox", containerFactory = "kafkaListenerContainerFactory")
+    public void consumeAuctionSearch( @Header(KafkaHeaders.RECEIVED_KEY) List<String> keys,
+                                     @Payload List<String> messages) throws JsonProcessingException {
+
+            List<AuctionEvent> auctionEventList= objectMapper.readValue(
+                    messages.toString(),
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, AuctionEvent.class)
+            );
+
+            log.info("Received messages: {}", messages);
+
+            auctionSearchUseCase.saveAuctionBulk(auctionEventList);
+
+
 //            Map<String, AuctionEvent> map  = null
 //            for (AuctionEvent auctionEvent:auctionEvents) {
 //
@@ -62,7 +70,7 @@ public class KafkaConsumerController {
 //
 //            List<AuctionEvent> dList = null
 //            List<AuctionEvent> cuList = null
-//
+
 //        for (AuctionEvent auctionEvent : map.values()) {
 //
 //                if (auctionEvent.getOp().equals("d")) {
@@ -80,5 +88,5 @@ public class KafkaConsumerController {
 //            }   else {
 //                auctionSearchUseCase.saveAuction(auctionCreateEventDto);
 //            }
-//    }
-//}
+    }
+}

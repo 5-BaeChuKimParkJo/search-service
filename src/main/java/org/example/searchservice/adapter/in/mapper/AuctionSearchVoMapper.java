@@ -3,9 +3,12 @@ package org.example.searchservice.adapter.in.mapper;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.searchservice.adapter.in.vo.in.CreateAuctionSearchRequestVo;
 import org.example.searchservice.adapter.in.vo.in.GetAuctionSearchRequestVo;
 import org.example.searchservice.adapter.in.vo.out.GetAuctionSearchResponseVo;
+import org.example.searchservice.adapter.in.vo.out.GetAuctionSearchResponseWrapperVo;
+import org.example.searchservice.adapter.in.vo.out.NextCursorVo;
 import org.example.searchservice.adapter.in.vo.out.SuggestAuctionSearchResponseVo;
 import org.example.searchservice.application.dto.in.CreateAuctionSearchRequestDto;
 import org.example.searchservice.application.dto.in.GetAuctionSearchRequestDto;
@@ -13,6 +16,9 @@ import org.example.searchservice.application.dto.out.GetAuctionSearchResponseDto
 import org.example.searchservice.application.dto.out.SuggestAuctionSearchResponseDto;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+@Slf4j
 @Getter
 @NoArgsConstructor
 @Component
@@ -43,6 +49,7 @@ public class AuctionSearchVoMapper {
     }
 
     public GetAuctionSearchResponseVo toGetAuctionSearchResponseVo(GetAuctionSearchResponseDto getAuctionSearchResponseDto) {
+
         return GetAuctionSearchResponseVo.builder()
                 .id(getAuctionSearchResponseDto.getId())
                 .auctionUuid(getAuctionSearchResponseDto.getAuctionUuid())
@@ -70,6 +77,30 @@ public class AuctionSearchVoMapper {
                 .categoryThumbnailKey(getAuctionSearchResponseDto.getCategoryThumbnailKey())
                 .tagId(getAuctionSearchResponseDto.getTagId())
                 .tagNames(getAuctionSearchResponseDto.getTagNames())
+                .build();
+    }
+
+    public GetAuctionSearchResponseWrapperVo toGetAuctionSearchResponseWrapperVo(List<GetAuctionSearchResponseDto> dtoList) {
+
+        List<GetAuctionSearchResponseVo> getAuctionSearchResponseVoList = dtoList.stream()
+                .map(this::toGetAuctionSearchResponseVo)
+                .toList();
+
+        NextCursorVo nextCursorVo = getAuctionSearchResponseVoList.isEmpty() ? null :
+                NextCursorVo.builder()
+                        .lastAuctionUuid(getAuctionSearchResponseVoList.get(getAuctionSearchResponseVoList.size() - 1).getAuctionUuid())
+                        .lastAuctionCreatedAt(getAuctionSearchResponseVoList.get(getAuctionSearchResponseVoList.size() - 1).getCreatedAt())
+                        .lastAuctionCurrentBid(getAuctionSearchResponseVoList.get(getAuctionSearchResponseVoList.size() - 1).getCurrentBid())
+                        .lastAuctionViewCount(getAuctionSearchResponseVoList.get(getAuctionSearchResponseVoList.size() - 1).getViewCount())
+                        .build();
+
+        log.info("Next cursor created with last auction UUID: {}, created at: {}, current bid: {}, view count: {}",
+                nextCursorVo.getLastAuctionUuid(), nextCursorVo.getLastAuctionCreatedAt(),
+                nextCursorVo.getLastAuctionCurrentBid(), nextCursorVo.getLastAuctionViewCount());
+
+        return GetAuctionSearchResponseWrapperVo.builder()
+                .getAuctionSearchResponseVoList(getAuctionSearchResponseVoList)
+                .nextCursorVo(nextCursorVo)
                 .build();
     }
 

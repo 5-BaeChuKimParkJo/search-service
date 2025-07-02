@@ -5,18 +5,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Getter
 @NoArgsConstructor
-public class NextCursor {
+public class NextCursorVo {
 
     private String lastAuctionUuid;
-    private String lastAuctionCreatedAt;
-    private String lastAuctionCurrentBid;
-    private String lastAuctionViewCount;
+    private Instant lastAuctionCreatedAt;
+    private int lastAuctionCurrentBid;
+    private int lastAuctionViewCount;
 
     @Builder
-    public NextCursor(String lastAuctionUuid, String lastAuctionCreatedAt,
-                      String lastAuctionCurrentBid, String lastAuctionViewCount) {
+    public NextCursorVo(String lastAuctionUuid, Instant lastAuctionCreatedAt,
+                        int lastAuctionCurrentBid, int lastAuctionViewCount) {
         this.lastAuctionUuid = lastAuctionUuid;
         this.lastAuctionCreatedAt = lastAuctionCreatedAt;
         this.lastAuctionCurrentBid = lastAuctionCurrentBid;

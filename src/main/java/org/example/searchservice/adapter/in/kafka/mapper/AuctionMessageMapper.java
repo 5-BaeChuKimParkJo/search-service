@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.example.searchservice.adapter.in.kafka.event.AuctionBatchEvent;
 import org.example.searchservice.adapter.in.kafka.event.AuctionEvent;
+import org.example.searchservice.application.dto.in.AuctionBatchEventDto;
 import org.example.searchservice.application.dto.in.AuctionCreateEventDto;
+import org.example.searchservice.application.dto.in.AuctionDeleteEventDto;
 import org.springframework.stereotype.Component;
 
 @Getter
@@ -43,6 +45,35 @@ public class AuctionMessageMapper {
             );
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse message: " + auctionEvent, e);
+        }
+    }
+
+    public AuctionBatchEventDto toAuctionBatchEventDto(String payload, String op) {
+
+        try {
+
+            AuctionBatchEventDto auctionBatchEventDto = objectMapper.readValue(
+                    payload,
+                    AuctionBatchEventDto.class
+            );
+            auctionBatchEventDto.setOp(op);
+
+            return auctionBatchEventDto;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse message: " + payload, e);
+        }
+    }
+
+    public AuctionDeleteEventDto toAuctionDeleteEventDto(String auctionUuid) {
+
+        try {
+            return AuctionDeleteEventDto.builder()
+                    .auctionUuid(auctionUuid)
+                    .build();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse message: " + auctionUuid, e);
         }
     }
 

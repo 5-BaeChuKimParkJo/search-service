@@ -66,6 +66,9 @@ public enum BaseResponseStatus {
     FAILED_TO_FEIGHN_CATEGORY(HttpStatus.INTERNAL_SERVER_ERROR, 9006, "카테고리 정보를 가져오는 데 실패하였습니다."),
     FAILED_TO_FEIGHN_TAG(HttpStatus.INTERNAL_SERVER_ERROR, 9007, "태그 정보를 가져오는 데 실패하였습니다."),
     AUCTION_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, 9008, "이미 존재하는 경매상품입니다."),
+    INVALID_OPERATION_TYPE(HttpStatus.BAD_REQUEST, 9009, "잘못된 작업 유형입니다. 'create', 'update', 'delete' 중 하나여야 합니다."),
+    FAILED_AUCTION_BULK_UPSERT(HttpStatus.INTERNAL_SERVER_ERROR, 9010, "경매상품 대량 업데이트에 실패하였습니다."),
+    FAILED_AUCTION_BULK_DELETE(HttpStatus.INTERNAL_SERVER_ERROR, 9011, "경매상품 대량 삭제에 실패하였습니다."),
     AUCTION_NOT_FOUND(HttpStatus.NOT_FOUND, 9000, "경매를 찾을 수 없습니다.");
 
 

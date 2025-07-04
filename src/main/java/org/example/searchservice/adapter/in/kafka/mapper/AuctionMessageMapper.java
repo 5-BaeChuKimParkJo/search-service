@@ -65,6 +65,7 @@ public class AuctionMessageMapper {
         }
     }
 
+
     public AuctionDeleteEventDto toAuctionDeleteEventDto(String auctionUuid) {
 
         try {

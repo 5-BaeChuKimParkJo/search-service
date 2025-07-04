@@ -11,6 +11,7 @@ import org.example.searchservice.adapter.out.elasticsearch.entity.KeywordSearchD
 import org.example.searchservice.adapter.out.elasticsearch.mapper.KeywordSearchDocumentMapper;
 import org.example.searchservice.adapter.out.elasticsearch.querybuilder.KeywordSearchQueryBuilder;
 import org.example.searchservice.application.dto.in.AuctionCreateEventDto;
+import org.example.searchservice.application.dto.in.KeywordBatchEventDto;
 import org.example.searchservice.application.dto.out.SuggestAuctionSearchResponseDto;
 import org.example.searchservice.application.port.out.KeywordSearchRepositoryPort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
@@ -56,7 +57,6 @@ public class KeywordSearchRepository implements KeywordSearchRepositoryPort {
 
         keywordSearchElasticRepository.saveAll(keywordSearchDocumentList);
 
-
     }
 
     @Override
@@ -71,6 +71,19 @@ public class KeywordSearchRepository implements KeywordSearchRepositoryPort {
         return hits.getSearchHits().stream()
                 .map(hit -> keywordSearchDocumentMapper.toSuggestAuctionSearchResponseDto(hit.getContent()))
                 .toList();
+    }
+
+    @Override
+    public void saveKeywordBulk(List<KeywordBatchEventDto> keywordBatchEventDtos) {
+
+        List<KeywordSearchDocument> keywordSearchDocuments = keywordBatchEventDtos.stream()
+                .map(keywordSearchDocumentMapper::toKeywordSearchDocument)
+                .collect(Collectors.toList());
+
+        keywordSearchElasticRepository.saveAll(keywordSearchDocuments);
+
+        log.info("Saved {} keywords in bulk", keywordSearchDocuments.size());
+
     }
 
 }

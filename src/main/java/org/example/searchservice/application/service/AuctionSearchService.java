@@ -108,6 +108,7 @@ public class AuctionSearchService implements AuctionSearchUseCase {
         auctionSearchRepositoryPort.upsertAuctionBulk(upsertEventDtos);
         auctionSearchRepositoryPort.deleteAuctionBulk(deleteEventDtos);
 
+
     }
 
     @Override

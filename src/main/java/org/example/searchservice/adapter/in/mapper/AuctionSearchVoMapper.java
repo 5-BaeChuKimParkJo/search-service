@@ -95,7 +95,6 @@ public class AuctionSearchVoMapper {
                         .lastAuctionViewCount(getAuctionSearchResponseVoList.get(getAuctionSearchResponseVoList.size() - 1).getViewCount())
                         .build();
 
-
         return GetAuctionSearchResponseWrapperVo.builder()
                 .getAuctionSearchResponseVoList(getAuctionSearchResponseVoList)
                 .nextCursorVo(nextCursorVo)

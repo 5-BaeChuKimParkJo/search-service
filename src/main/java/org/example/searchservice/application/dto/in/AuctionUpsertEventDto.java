@@ -2,6 +2,7 @@ package org.example.searchservice.application.dto.in;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.searchservice.adapter.in.kafka.event.Image;
 import org.springframework.data.annotation.CreatedBy;
@@ -11,7 +12,7 @@ import java.util.List;
 
 
 @Getter
-@Setter
+@NoArgsConstructor
 public class AuctionUpsertEventDto {
 
     private Instant endAt;
@@ -65,4 +66,5 @@ public class AuctionUpsertEventDto {
         this.categoryName = categoryName;
         this.tagNames = tagNames;
     }
+
 }

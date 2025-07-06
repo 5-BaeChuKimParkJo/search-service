@@ -24,6 +24,12 @@ public class AuctionSearchQueryBuilder {
 
     public NativeQuery buildAuctionsSearchQuery(GetAuctionSearchRequestDto getAuctionSearchRequestDto) {
 
+        try {
+
+            if (getAuctionSearchRequestDto.getSortBy() == null) {
+                throw new BaseException(BaseResponseStatus.REQUIRED_SORT_BY);
+            }
+
             BoolQuery.Builder boolBuilder = QueryBuilders.bool();
 
             if (getAuctionSearchRequestDto.getAuctionTitle() != null && !getAuctionSearchRequestDto.getAuctionTitle().isEmpty()) {
@@ -56,13 +62,18 @@ public class AuctionSearchQueryBuilder {
                         .value(getAuctionSearchRequestDto.isDirectDeal())));
             }
 
+            if (getAuctionSearchRequestDto.getDirectDealLocation() != null && !getAuctionSearchRequestDto.getDirectDealLocation().isEmpty()) {
+                boolBuilder.filter(q -> q.term(t -> t
+                        .field("directDealLocation")
+                        .value(getAuctionSearchRequestDto.getDirectDealLocation())));
+            }
+
             if (getAuctionSearchRequestDto.getProductCondition() != null && !getAuctionSearchRequestDto.getProductCondition().isEmpty()) {
                 boolBuilder.filter(q -> q.term(t -> t
                         .field("productCondition")
                         .value(getAuctionSearchRequestDto.getProductCondition())));
             }
 
-            // Sorting logic
             Sort sort = Sort.unsorted();
             List<Object> searchAfter = getAuctionSearchRequestDto.getSearchAfter();
             log.info("Search after: {}", searchAfter);
@@ -70,55 +81,46 @@ public class AuctionSearchQueryBuilder {
             String sortBy = getAuctionSearchRequestDto.getSortBy();
             log.info("Sort by: {}", sortBy);
 
-            if (sortBy != null) {
-                switch (sortBy.trim()) {
-                    case "latest": // 최신순
-                        sort = Sort.by(
-                                Sort.Order.desc("createdAt"),
-                                Sort.Order.asc("auctionUuid.keyword")
-                        );
-                        break;
-                    case "priceHigh": // 높은 가격순
-                        sort = Sort.by(
-                                Sort.Order.desc("currentBid"),
-                                Sort.Order.asc("auctionUuid.keyword")
-                        );
-                        break;
-                    case "priceLow": // 낮은 가격순
-                        sort = Sort.by(
-                                Sort.Order.asc("currentBid"),
-                                Sort.Order.asc("auctionUuid.keyword")
-                        );
+            switch (sortBy.trim()) {
+                case "latest": // 최신순
+                    sort = Sort.by(
+                            Sort.Order.desc("createdAt"),
+                            Sort.Order.asc("auctionUuid.keyword")
+                    );
+                    break;
+                case "priceHigh": // 높은 가격순
+                    sort = Sort.by(
+                            Sort.Order.desc("currentBid"),
+                            Sort.Order.asc("auctionUuid.keyword")
+                    );
+                    break;
+                case "priceLow": // 낮은 가격순
+                    sort = Sort.by(
+                            Sort.Order.asc("currentBid"),
+                            Sort.Order.asc("auctionUuid.keyword")
+                    );
 
-                        break;
-                    case "recommended": // 추천순 (정렬 기준 추가 필요)
-                        sort = Sort.by(
-                                Sort.Order.desc("viewCount"),
-                                Sort.Order.asc("auctionUuid.keyword")
-                        );
-                        break;
-                    default:
-                        break;
-                }
-
-                return NativeQuery.builder()
-                        .withQuery(boolBuilder.build()._toQuery())
-                        .withSort(sort)
-                        .withSearchAfter(searchAfter)
-                        .withMaxResults(20)
-                        .build();
+                    break;
+                case "recommended": // 추천순 (정렬 기준 추가 필요)
+                    sort = Sort.by(
+                            Sort.Order.desc("viewCount"),
+                            Sort.Order.asc("auctionUuid.keyword")
+                    );
+                    break;
+                default:
+                    break;
             }
 
-            else {
-
-                return NativeQuery.builder()
-                        .withQuery(boolBuilder.build()._toQuery())
-                        .withSort(sort)
-                        .withMaxResults(20)
-                        .build();
-            }
-
-
+            return NativeQuery.builder()
+                    .withQuery(boolBuilder.build()._toQuery())
+                    .withSort(sort)
+                    .withSearchAfter(searchAfter)
+                    .withMaxResults(20)
+                    .build();
+        } catch (Exception e) {
+            log.info("Error building auction search query: {}", e.getMessage());
+            throw new BaseException(BaseResponseStatus.FAILED_QUERY_BUILD);
+        }
 
     }
 

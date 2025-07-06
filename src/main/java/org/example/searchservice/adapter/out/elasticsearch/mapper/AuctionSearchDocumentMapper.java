@@ -3,10 +3,7 @@ package org.example.searchservice.adapter.out.elasticsearch.mapper;
 
 import lombok.Getter;
 import org.example.searchservice.adapter.out.elasticsearch.entity.AuctionSearchDocument;
-import org.example.searchservice.application.dto.in.AuctionCreateEventDto;
-import org.example.searchservice.application.dto.in.CategoryResponseDto;
-import org.example.searchservice.application.dto.in.CreateAuctionSearchRequestDto;
-import org.example.searchservice.application.dto.in.TagResponseDto;
+import org.example.searchservice.application.dto.in.*;
 import org.example.searchservice.application.dto.out.GetAuctionSearchResponseDto;
 import org.example.searchservice.application.dto.out.SuggestAuctionSearchResponseDto;
 import org.springframework.stereotype.Component;
@@ -26,6 +23,33 @@ public class AuctionSearchDocumentMapper {
                 .directDealLocation(createAuctionSearchRequestDto.getDirectDealLocation())
                 .createdAt(java.time.Instant.now())
                 .build();
+    }
+
+    public AuctionSearchDocument toAuctionSearchDocument(AuctionUpsertEventDto dto) {
+        return AuctionSearchDocument.builder()
+                .thumbnailKey(dto.getThumbnailKey())
+                .createdAt(dto.getCreatedAt())
+                .endAt(dto.getEndAt())
+                .startAt(dto.getStartAt())
+                .version(dto.getVersion())
+                .viewCount(dto.getViewCount())
+                .currentBid(dto.getCurrentBid())
+                .minimumBid(dto.getMinimumBid())
+                .sellerUuid(dto.getSellerUuid())
+                .isDirectDeal(dto.isDirectDeal())
+                .productCondition(dto.getProductCondition())
+                .thumbnailUrl(dto.getThumbnailUrl())
+                .directDealLocation(dto.getDirectDealLocation())
+                .images(dto.getImages())
+                .auctionTitle(dto.getTitle())
+                .auctionDescription(dto.getDescription())
+                .auctionUuid(dto.getAuctionUuid())
+                .categoryId(dto.getCategoryId())
+                .categoryName(dto.getCategoryName())
+                .tagId(dto.getTagIds())
+                .tagNames(dto.getTagNames())
+                .build();
+
     }
 
     public AuctionSearchDocument toAuctionSearchDocument(AuctionCreateEventDto auctionCreateEventDto, CategoryResponseDto categoryResponseDto, List<TagResponseDto> tagResponseDtoList) {

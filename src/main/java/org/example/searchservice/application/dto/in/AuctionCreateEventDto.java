@@ -2,13 +2,14 @@ package org.example.searchservice.application.dto.in;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.searchservice.adapter.in.kafka.event.Image;
 
 import java.time.Instant;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
+@Setter
 public class AuctionCreateEventDto {
 
     private Instant endAt;
@@ -30,4 +31,6 @@ public class AuctionCreateEventDto {
     private String thumbnailUrl;
     private String productCondition;
     private String directDealLocation;
+    private String categoryName;
+    private List<String> tagNames;
 }

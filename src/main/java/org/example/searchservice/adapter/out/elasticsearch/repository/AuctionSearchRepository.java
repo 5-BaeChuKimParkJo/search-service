@@ -22,9 +22,13 @@ import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.DeleteQuery;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 
 
 @Slf4j
@@ -77,12 +81,6 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
     @Override
     public void saveAuction(AuctionCreateEventDto auctionCreateEventDto, CategoryResponseDto categoryResponseDto, List<TagResponseDto> tagResponseDtoList) {
 
-//        auctionSearchElasticRepository.findByAuctionUuid(auctionCreateEventDto.getAuctionUuid())
-//                .ifPresent(existingDocument -> {
-//                    log.info("Auction with UUID {} already exists, skipping save.", auctionCreateEventDto.getAuctionUuid());
-//                    throw new BaseException(BaseResponseStatus.AUCTION_ALREADY_EXISTS);
-//                });
-
         try {
             auctionSearchElasticRepository.save(
                     auctionSearchDocumentMapper.toAuctionSearchDocument(
@@ -97,6 +95,61 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
             throw new BaseException(BaseResponseStatus.FAILED_AUCTION_SAVE);
         }
     }
+
+    @Override
+    public void upsertAuctionBulk(List<AuctionUpsertEventDto> auctionUpsertEventDto) {
+
+        List<AuctionSearchDocument> auctionSearchDocuments = auctionUpsertEventDto.stream()
+                .map(auctionSearchDocumentMapper::toAuctionSearchDocument)
+                .toList();
+
+        try {
+            auctionSearchElasticRepository.saveAll(auctionSearchDocuments);
+            log.info("Bulk upsert of auctions completed successfully.");
+        } catch (Exception e) {
+            log.error("Error during bulk upsert of auctions: {}", e.getMessage(), e);
+            throw new BaseException(BaseResponseStatus.FAILED_AUCTION_BULK_UPSERT);
+        }
+
+    }
+
+    @Override
+    public void deleteAuctionBulk(List<AuctionDeleteEventDto> auctionDeleteEventDto) {
+
+        List<String> auctionUuids = auctionDeleteEventDto.stream()
+                .map(AuctionDeleteEventDto::getAuctionUuid)
+                .toList();
+
+        List<String> auctionIds = new ArrayList<>();
+
+        auctionUuids.stream()
+                .forEach(uuid -> {
+                    try {
+                        auctionSearchElasticRepository.findByAuctionUuid(uuid)
+                                .ifPresent(auctionSearchDocument -> {
+                                    auctionIds.add(auctionSearchDocument.getId());
+                                    log.info("Found auction with UUID: {}", uuid);
+                                });
+                    } catch (Exception e) {
+                        log.error("Error finding auction with UUID {}: {}", uuid, e.getMessage(), e);
+                        throw new BaseException(BaseResponseStatus.FAILED_AUCTION_BULK_DELETE);
+                    }
+                });
+
+        auctionIds.stream()
+                .forEach(id -> {
+                    try {
+                        auctionSearchElasticRepository.deleteById(id);
+                    } catch (Exception e) {
+                        log.error("Error deleting auction with ID {}: {}", id, e.getMessage(), e);
+                        throw new BaseException(BaseResponseStatus.FAILED_AUCTION_BULK_DELETE);
+                    }
+                });
+
+
+
+    }
+
 
     @Override
     public List<SuggestAuctionSearchResponseDto> suggest(String keyword) {

@@ -1,23 +1,23 @@
-package org.example.searchservice.adapter.in.kafka.event;
+package org.example.searchservice.application.dto.in;
 
-import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
+import org.example.searchservice.adapter.in.kafka.event.Image;
 
-import java.util.List;
-
-
-
+import java.time.Instant;
 import java.util.List;
 
 @Getter
-public class AuctionCreateEvent {
-    private String endAt;
+@Setter
+public class AuctionBatchEventDto {
+
+    private Instant endAt;
     private String title;
     private List<Image> images;
     private List<Long> tagIds;
-    private String startAt;
+    private Instant startAt;
     private int version;
-    private String createdAt;
+    private Instant createdAt;
     private int viewCount;
     private int categoryId;
     private int currentBid;
@@ -30,4 +30,7 @@ public class AuctionCreateEvent {
     private String thumbnailUrl;
     private String productCondition;
     private String directDealLocation;
+    private String op;
+    private String categoryName;
+    private List<String> tagNames;
 }

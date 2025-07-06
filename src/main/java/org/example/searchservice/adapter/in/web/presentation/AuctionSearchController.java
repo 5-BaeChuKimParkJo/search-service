@@ -27,7 +27,7 @@ public class AuctionSearchController {
     private final AuctionSearchVoMapper auctionSearchVoMapper;
 
 
-    @Operation(summary = "Search for auctions based on various criteria")
+    @Operation(summary = "Search for auctions based on various criteria: sortBy: latest, priceHigh, priceLow, recommended")
     @GetMapping
     public GetAuctionSearchResponseWrapperVo getAuctionSearchList(
             @ModelAttribute GetAuctionSearchRequestVo getAuctionSearchRequestVo
@@ -43,7 +43,7 @@ public class AuctionSearchController {
         );
     }
 
-    @Operation(summary = "Create a new auction search, only for TEST")
+    @Operation(summary = "Create a new auction search, only for TEST, 안씀")
     @PostMapping
     public void createAuctionSearch(
             @RequestBody CreateAuctionSearchRequestVo createAuctionSearchRequestVo
@@ -53,7 +53,7 @@ public class AuctionSearchController {
         );
     }
 
-    @Operation(summary = "Suggest auctions based on a keyword")
+    @Operation(summary = "Suggest auctions based on a keyword, 안쓸 예정")
     @GetMapping("/suggest")
     public List<SuggestAuctionSearchResponseVo> suggestAuctionSearch(
             @RequestParam String keyword

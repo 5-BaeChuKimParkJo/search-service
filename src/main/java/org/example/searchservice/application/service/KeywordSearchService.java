@@ -5,10 +5,10 @@ import kr.co.shineware.nlp.komoran.constant.DEFAULT_MODEL;
 import kr.co.shineware.nlp.komoran.core.Komoran;
 import kr.co.shineware.nlp.komoran.model.Token;
 import lombok.RequiredArgsConstructor;
-import org.example.searchservice.adapter.in.kafka.event.AuctionBatchEvent;
-import org.example.searchservice.adapter.in.kafka.event.AuctionEvent;
+import org.example.searchservice.adapter.in.kafka.event.auction.AuctionEvent;
 import org.example.searchservice.adapter.in.kafka.event.KeywordBatchEvent;
-import org.example.searchservice.adapter.in.kafka.mapper.AuctionMessageMapper;
+import org.example.searchservice.adapter.in.kafka.event.product.ProductBatchEvent;
+import org.example.searchservice.adapter.in.kafka.event.product.ProductEvent;
 import org.example.searchservice.adapter.in.kafka.mapper.KeywordMessageMapper;
 import org.example.searchservice.application.dto.in.KeywordBatchEventDto;
 import org.example.searchservice.application.dto.out.SuggestAuctionSearchResponseDto;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,6 +62,15 @@ public class KeywordSearchService implements KeywordSearchUseCase {
 
         keywordSearchRepositoryPort.saveKeywordBulk(keywordBatchEventDtos);
 
+
+    }
+
+    @Override
+    public void saveProductKeywordBulk(List<ProductEvent> productEvents) {
+
+        List<ProductBatchEvent> productBatchEvents = productEvents.stream()
+                .map(keywordMessageMapper::toProductBatchEvent)
+                .toList();
 
     }
 }

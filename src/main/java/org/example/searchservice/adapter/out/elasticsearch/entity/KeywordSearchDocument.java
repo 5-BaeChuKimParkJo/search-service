@@ -16,8 +16,6 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 public class KeywordSearchDocument {
 
     @Id
-    private String id;
-
     @Field(type = FieldType.Text)
     private String keyword;
 
@@ -25,13 +23,16 @@ public class KeywordSearchDocument {
     private int weight = 0;
 
     @Builder
-    public KeywordSearchDocument(String id, String keyword, int weight) {
-        this.id = id;
+    public KeywordSearchDocument(String keyword, int weight) {
         this.keyword = keyword;
         this.weight = weight;
     }
 
     public void incrementWeight() {
         this.weight++;
+    }
+
+    public void incrementWeightBy(int increment) {
+        this.weight += increment;
     }
 }

@@ -1,7 +1,6 @@
 package org.example.searchservice.application.port.in;
 
-import org.example.searchservice.adapter.in.kafka.event.AuctionCreateEvent;
-import org.example.searchservice.adapter.in.kafka.event.AuctionEvent;
+import org.example.searchservice.adapter.in.kafka.event.auction.AuctionEvent;
 import org.example.searchservice.application.dto.in.AuctionCreateEventDto;
 import org.example.searchservice.application.dto.in.CreateAuctionSearchRequestDto;
 import org.example.searchservice.application.dto.in.GetAuctionSearchRequestDto;

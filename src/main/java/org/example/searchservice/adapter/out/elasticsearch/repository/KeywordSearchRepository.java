@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -76,14 +77,31 @@ public class KeywordSearchRepository implements KeywordSearchRepositoryPort {
     @Override
     public void saveKeywordBulk(List<KeywordBatchEventDto> keywordBatchEventDtos) {
 
-        List<KeywordSearchDocument> keywordSearchDocuments = keywordBatchEventDtos.stream()
-                .map(keywordSearchDocumentMapper::toKeywordSearchDocument)
-                .collect(Collectors.toList());
+        Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+
+        Map<String, Long> keywordFrequency = keywordBatchEventDtos.stream()
+                .map(KeywordBatchEventDto::getKeyword)
+                .flatMap(keyword -> komoran.analyze(keyword).getTokenList().stream())
+                .filter(token -> token.getPos().equals("NNG") || token.getPos().equals("NNP"))
+                .map(Token::getMorph)
+                .collect(Collectors.groupingBy(morph -> morph, Collectors.counting()));
+
+        List<KeywordSearchDocument> keywordSearchDocuments = new ArrayList<>();
+
+        for (Map.Entry<String, Long> entry : keywordFrequency.entrySet()) {
+            String keyword = entry.getKey();
+            int count = entry.getValue().intValue();
+
+            KeywordSearchDocument document = keywordSearchElasticRepository.findByKeyword(keyword)
+                    .orElseGet(() -> KeywordSearchDocument.builder().keyword(keyword).weight(0).build());
+
+            document.incrementWeightBy(count);
+            keywordSearchDocuments.add(document);
+        }
 
         keywordSearchElasticRepository.saveAll(keywordSearchDocuments);
 
         log.info("Saved {} keywords in bulk", keywordSearchDocuments.size());
-
     }
 
 }

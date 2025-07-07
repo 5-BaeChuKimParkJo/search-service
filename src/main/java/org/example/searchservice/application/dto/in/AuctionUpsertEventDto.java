@@ -3,9 +3,7 @@ package org.example.searchservice.application.dto.in;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.example.searchservice.adapter.in.kafka.event.Image;
-import org.springframework.data.annotation.CreatedBy;
+import org.example.searchservice.adapter.in.kafka.event.auction.Image;
 
 import java.time.Instant;
 import java.util.List;

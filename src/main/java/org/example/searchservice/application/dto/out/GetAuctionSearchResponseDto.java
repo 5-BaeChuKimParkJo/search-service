@@ -4,7 +4,7 @@ package org.example.searchservice.application.dto.out;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.searchservice.adapter.in.kafka.event.Image;
+import org.example.searchservice.adapter.in.kafka.event.auction.Image;
 
 import java.time.Instant;
 import java.util.List;

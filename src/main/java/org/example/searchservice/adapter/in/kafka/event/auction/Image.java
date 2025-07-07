@@ -1,4 +1,4 @@
-package org.example.searchservice.adapter.in.kafka.event;
+package org.example.searchservice.adapter.in.kafka.event.auction;
 
 import lombok.Data;
 

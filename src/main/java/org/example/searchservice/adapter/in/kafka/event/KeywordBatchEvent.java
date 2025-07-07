@@ -1,6 +1,7 @@
 package org.example.searchservice.adapter.in.kafka.event;
 
 import lombok.Getter;
+import org.example.searchservice.adapter.in.kafka.event.auction.Image;
 
 import java.util.List;
 

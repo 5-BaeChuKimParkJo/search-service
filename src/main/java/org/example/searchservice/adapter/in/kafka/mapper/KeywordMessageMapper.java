@@ -2,9 +2,10 @@ package org.example.searchservice.adapter.in.kafka.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.example.searchservice.adapter.in.kafka.event.AuctionEvent;
+import org.example.searchservice.adapter.in.kafka.event.auction.AuctionEvent;
 import org.example.searchservice.adapter.in.kafka.event.KeywordBatchEvent;
-import org.example.searchservice.application.dto.in.AuctionBatchEventDto;
+import org.example.searchservice.adapter.in.kafka.event.product.ProductBatchEvent;
+import org.example.searchservice.adapter.in.kafka.event.product.ProductEvent;
 import org.example.searchservice.application.dto.in.KeywordBatchEventDto;
 import org.example.searchservice.common.exception.BaseException;
 import org.example.searchservice.common.response.BaseResponseStatus;
@@ -34,6 +35,10 @@ public class KeywordMessageMapper {
                 .weight(weight)
                 .build();
 
+    }
+
+    public ProductBatchEvent toProductBatchEvent(ProductEvent productEvent) {
+        return null;
     }
 
 

@@ -1,10 +1,7 @@
-package org.example.searchservice.adapter.in.kafka.event;
+package org.example.searchservice.adapter.in.kafka.event.product;
 
+public class ProductEvent {
 
-import lombok.Data;
-
-@Data
-public class AuctionEvent {
     private String id;
     private String aggregateType;
     private String aggregateId;

@@ -1,5 +1,9 @@
 package org.example.searchservice.adapter.in.kafka.event.product;
 
+
+import lombok.Getter;
+
+@Getter
 public class ProductEvent {
 
     private String id;

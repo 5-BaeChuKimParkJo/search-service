@@ -72,5 +72,30 @@ public class KeywordSearchService implements KeywordSearchUseCase {
                 .map(keywordMessageMapper::toProductBatchEvent)
                 .toList();
 
+        Komoran komoran = new Komoran(DEFAULT_MODEL.FULL);
+
+        Map<String, Integer> keywordFrequencyMap = productBatchEvents.stream()
+                .map(ProductBatchEvent::getTitle)
+                .map(komoran::analyze)
+                .flatMap(result -> result.getTokenList().stream())
+                .filter(token -> token.getPos().equals("NNG") || token.getPos().equals("NNP"))
+                .map(Token::getMorph)
+                .collect(Collectors.toMap(
+                        morph -> morph,
+                        morph -> 1,
+                        Integer::sum // 중복 키워드는 개수 누적
+                ));
+
+        List<KeywordBatchEventDto> keywordBatchEventDtos = keywordFrequencyMap.entrySet().stream()
+                .map(entry -> {
+                    String keyword = entry.getKey();
+                    int weight = entry.getValue();
+                    return keywordMessageMapper.toKeywordBatchEventDto(keyword, weight); // 수동으로 DTO 가중치 넣기
+                })
+                .toList();
+
+        keywordSearchRepositoryPort.saveKeywordBulk(keywordBatchEventDtos);
+
+
     }
 }

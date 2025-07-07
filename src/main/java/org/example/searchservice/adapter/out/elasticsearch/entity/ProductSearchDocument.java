@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,26 +29,29 @@ public class ProductSearchDocument {
     @Field(type = FieldType.Keyword)
     private String saleMemberUuid;
 
-    @Field(type = FieldType.Text, analyzer = "korean") // 또는 "standard"
+    @Field(type = FieldType.Text)
     private String title;
 
     @Field(type = FieldType.Keyword)
-    private String categoryId;
+    private int categoryId;
 
-    @Field(type = FieldType.Text, analyzer = "korean")
+    @Field(type = FieldType.Keyword)
+    private String categoryName;
+
+    @Field(type = FieldType.Text)
     private String description;
 
     @Field(type = FieldType.Keyword)
     private String productCondition;
 
     @Field(type = FieldType.Boolean)
-    private Boolean isDirectDeal;
+    private boolean isDirectDeal;
 
-    @Field(type = FieldType.Text, analyzer = "korean")
+    @Field(type = FieldType.Text)
     private String directDealLocation;
 
     @Field(type = FieldType.Boolean)
-    private Boolean isHide;
+    private boolean isHide;
 
     @Field(type = FieldType.Keyword)
     private String status;
@@ -56,10 +60,10 @@ public class ProductSearchDocument {
     private String thumbnailKey;
 
     @Field(type = FieldType.Integer)
-    private Integer viewCount;
+    private int viewCount;
 
     @Field(type = FieldType.Integer)
-    private Integer price;
+    private int price;
 
     @Field(type = FieldType.Keyword)
     private String ticketUuid;
@@ -68,20 +72,39 @@ public class ProductSearchDocument {
     private List<ImageUrl> imageUrlList;
 
     @Field(type = FieldType.Keyword)
-    private List<String> tagIdList;
+    private List<Long> tagIdList;
+
+    @Field(type = FieldType.Keyword)
+    private List<String> tagNames;
 
     @Field(type = FieldType.Boolean)
-    private Boolean isDeleted;
+    private boolean isDeleted;
 
     @Field(type = FieldType.Date, format = DateFormat.date_time)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @Builder
-    public ProductSearchDocument(Long id, String productUuid, String saleMemberUuid, String title, String categoryId,
-                                 String description, String productCondition, Boolean isDirectDeal,
-                                 String directDealLocation, Boolean isHide, String status, String thumbnailKey,
-                                 Integer viewCount, Integer price, String ticketUuid, List<ImageUrl> imageUrlList,
-                                 List<String> tagIdList, Boolean isDeleted, LocalDateTime createdAt) {
+    public ProductSearchDocument(Long id,
+                                 String productUuid,
+                                 String saleMemberUuid,
+                                 String title,
+                                 int categoryId,
+                                 String description,
+                                 String productCondition,
+                                 boolean isDirectDeal,
+                                 String directDealLocation,
+                                 boolean isHide,
+                                 String status,
+                                 String thumbnailKey,
+                                 int viewCount,
+                                 int price,
+                                 String ticketUuid,
+                                 List<ImageUrl> imageUrlList,
+                                 List<Long> tagIdList,
+                                 boolean isDeleted,
+                                 String categoryName,
+                                 List<String> tagNames,
+                                 Instant createdAt) {
         this.id = id;
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
@@ -96,11 +119,12 @@ public class ProductSearchDocument {
         this.thumbnailKey = thumbnailKey;
         this.viewCount = viewCount;
         this.price = price;
+        this.tagNames = tagNames;
+        this.categoryName = categoryName;
         this.ticketUuid = ticketUuid;
         this.imageUrlList = imageUrlList;
         this.tagIdList = tagIdList;
         this.isDeleted = isDeleted;
         this.createdAt = createdAt;
     }
-
 }

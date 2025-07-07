@@ -1,41 +1,47 @@
-package org.example.searchservice.adapter.in.kafka.event.product;
+package org.example.searchservice.application.dto.out;
+
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.example.searchservice.adapter.in.kafka.event.product.ImageUrl;
 
 import java.time.Instant;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
-public class ProductBatchEvent {
+@Setter
+public class ProductUpsertEventDto {
+
     private Long id;
     private String productUuid;
     private String saleMemberUuid;
     private String title;
-    private String categoryId;
+    private int categoryId;
     private String description;
     private String productCondition;
-    private Boolean isDirectDeal;
+    private boolean isDirectDeal;
     private String directDealLocation;
     private Boolean isHide;
     private String status;
     private String thumbnailKey;
-    private Integer viewCount;
-    private Integer price;
+    private int viewCount;
+    private int price;
     private String ticketUuid;
     private List<ImageUrl> imageUrlList;
-    private List<Integer> tagIdList;
+    private List<Long> tagIdList;
     private Boolean isDeleted;
     private Instant createdAt;
+    private List<String> tagNames;
+    private String categoryName;
 
     @Builder
-    public ProductBatchEvent(Long id, String productUuid, String saleMemberUuid, String title, String categoryId,
-                             String description, String productCondition, Boolean isDirectDeal,
-                             String directDealLocation, Boolean isHide, String status, String thumbnailKey,
-                             Integer viewCount, Integer price, String ticketUuid, List<ImageUrl> imageUrlList,
-                             List<Integer> tagIdList, Boolean isDeleted, Instant createdAt) {
+    public ProductUpsertEventDto(Long id, String productUuid, String saleMemberUuid, String title, int categoryId,
+                                 String description, String productCondition, boolean isDirectDeal,
+                                 String directDealLocation, Boolean isHide, String status, String thumbnailKey,
+                                 int viewCount, int price, String ticketUuid, List<ImageUrl> imageUrlList,
+                                 List<Long> tagIdList, Boolean isDeleted, Instant createdAt,
+                                 List<String> tagNames, String categoryName) {
         this.id = id;
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
@@ -55,7 +61,7 @@ public class ProductBatchEvent {
         this.tagIdList = tagIdList;
         this.isDeleted = isDeleted;
         this.createdAt = createdAt;
+        this.tagNames = tagNames;
+        this.categoryName = categoryName;
     }
-
-
 }

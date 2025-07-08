@@ -2,6 +2,7 @@ package org.example.searchservice.adapter.out.elasticsearch.mapper;
 
 
 import org.example.searchservice.adapter.out.elasticsearch.entity.ProductSearchDocument;
+import org.example.searchservice.application.dto.out.GetProductSearchResponseDto;
 import org.example.searchservice.application.dto.out.ProductUpsertEventDto;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,31 @@ public class ProductSearchDocumentMapper {
                 .createdAt(productUpsertEventDto.getCreatedAt())
                 .tagNames(productUpsertEventDto.getTagNames())
                 .categoryName(productUpsertEventDto.getCategoryName())
+                .build();
+    }
+
+    public GetProductSearchResponseDto toGetProductSearchResponseDto(ProductSearchDocument productSearchDocument) {
+        return GetProductSearchResponseDto.builder()
+                .productUuid(productSearchDocument.getProductUuid())
+                .saleMemberUuid(productSearchDocument.getSaleMemberUuid())
+                .title(productSearchDocument.getTitle())
+                .categoryId(productSearchDocument.getCategoryId())
+                .description(productSearchDocument.getDescription())
+                .productCondition(productSearchDocument.getProductCondition())
+                .isDirectDeal(productSearchDocument.isDirectDeal())
+                .directDealLocation(productSearchDocument.getDirectDealLocation())
+                .isHide(productSearchDocument.isHide())
+                .status(productSearchDocument.getStatus())
+                .thumbnailKey(productSearchDocument.getThumbnailKey())
+                .viewCount(productSearchDocument.getViewCount())
+                .price(productSearchDocument.getPrice())
+                .ticketUuid(productSearchDocument.getTicketUuid())
+                .imageUrlList(productSearchDocument.getImageUrlList())
+                .tagIdList(productSearchDocument.getTagIdList())
+                .isDeleted(productSearchDocument.isDeleted())
+                .createdAt(productSearchDocument.getCreatedAt())
+                .tagNames(productSearchDocument.getTagNames())
+                .categoryName(productSearchDocument.getCategoryName())
                 .build();
     }
 }

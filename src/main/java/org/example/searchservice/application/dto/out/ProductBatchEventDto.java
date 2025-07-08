@@ -31,6 +31,10 @@ public class ProductBatchEventDto {
     private List<ImageUrl> imageUrlList;
     private List<Long> tagIdList;
     private Boolean isDeleted;
-    private Instant createdAt;
+    private String createdAt;
     private String op;
+
+    public Instant getCreatedAtAsInstant() {
+        return LocalDateTime.parse(createdAt).toInstant(java.time.ZoneOffset.UTC);
+    }
 }

@@ -71,6 +71,7 @@ public enum BaseResponseStatus {
     FAILED_AUCTION_BULK_DELETE(HttpStatus.INTERNAL_SERVER_ERROR, 9011, "경매상품 대량 삭제에 실패하였습니다."),
     FAILED_TO_PARSE_KEYWORD_BATCH_EVENT(HttpStatus.INTERNAL_SERVER_ERROR, 9012, "키워드 배치 이벤트 파싱에 실패하였습니다."),
     REQUIRED_SORT_BY(HttpStatus.BAD_REQUEST, 9013, "검색 결과를 정렬하기 위한 'sortBy' 파라미터가 필요합니다."),
+    FAILED_PRODUCT_SEARCH(HttpStatus.INTERNAL_SERVER_ERROR, 9014, "상품 검색에 실패하였습니다."),
     AUCTION_NOT_FOUND(HttpStatus.NOT_FOUND, 9000, "경매를 찾을 수 없습니다.");
 
 

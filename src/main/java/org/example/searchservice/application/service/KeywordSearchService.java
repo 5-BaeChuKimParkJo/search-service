@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,6 +70,7 @@ public class KeywordSearchService implements KeywordSearchUseCase {
     public void saveProductKeywordBulk(List<ProductEvent> productEvents) {
 
         List<ProductBatchEvent> productBatchEvents = productEvents.stream()
+                .filter(Objects::nonNull)
                 .map(keywordMessageMapper::toProductBatchEvent)
                 .toList();
 

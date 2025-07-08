@@ -17,12 +17,11 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProductSearchDocument {
+public class  ProductSearchDocument {
+
 
 
     @Id
-    private Long id;
-
     @Field(type = FieldType.Keyword)
     private String productUuid;
 
@@ -35,7 +34,7 @@ public class ProductSearchDocument {
     @Field(type = FieldType.Keyword)
     private int categoryId;
 
-    @Field(type = FieldType.Keyword)
+    @Field(type = FieldType.Text)
     private String categoryName;
 
     @Field(type = FieldType.Text)
@@ -74,7 +73,7 @@ public class ProductSearchDocument {
     @Field(type = FieldType.Keyword)
     private List<Long> tagIdList;
 
-    @Field(type = FieldType.Keyword)
+    @Field(type = FieldType.Text)
     private List<String> tagNames;
 
     @Field(type = FieldType.Boolean)
@@ -84,7 +83,7 @@ public class ProductSearchDocument {
     private Instant createdAt;
 
     @Builder
-    public ProductSearchDocument(Long id,
+    public ProductSearchDocument(
                                  String productUuid,
                                  String saleMemberUuid,
                                  String title,
@@ -105,7 +104,6 @@ public class ProductSearchDocument {
                                  String categoryName,
                                  List<String> tagNames,
                                  Instant createdAt) {
-        this.id = id;
         this.productUuid = productUuid;
         this.saleMemberUuid = saleMemberUuid;
         this.title = title;

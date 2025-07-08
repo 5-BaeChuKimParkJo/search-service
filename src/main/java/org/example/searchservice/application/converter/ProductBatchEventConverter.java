@@ -14,6 +14,8 @@ public class ProductBatchEventConverter {
     public ProductUpsertEventDto toProductUpsertDto(ProductBatchEventDto productDto,
                                                     CategoryResponseDto categoryResponseDto,
                                                     List<TagResponseDto> tagResponseDtos) {
+
+
         return ProductUpsertEventDto.builder()
                 .productUuid(productDto.getProductUuid())
                 .title(productDto.getTitle())
@@ -36,7 +38,7 @@ public class ProductBatchEventConverter {
                 .categoryName(categoryResponseDto.getCategoryName())
                 .tagIdList(productDto.getTagIdList())
                 .tagNames(tagResponseDtos.stream().map(TagResponseDto::getTagName).toList())
-                .createdAt(productDto.getCreatedAt())
+                .createdAt(productDto.getCreatedAtAsInstant())
                 .build();
     }
 }

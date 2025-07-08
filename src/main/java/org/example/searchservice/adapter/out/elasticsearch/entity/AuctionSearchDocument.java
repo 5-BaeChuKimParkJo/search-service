@@ -24,7 +24,6 @@ import java.util.List;
 public class AuctionSearchDocument {
 
     @Id
-    private String id;
     @Field(type = FieldType.Keyword)
     private String auctionUuid;
 

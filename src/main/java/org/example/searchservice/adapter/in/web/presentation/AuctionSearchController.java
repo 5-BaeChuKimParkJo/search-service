@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/auction/search")
+@RequestMapping("/search-service/api/v1/auction/search")
 @RequiredArgsConstructor
 public class AuctionSearchController {
 

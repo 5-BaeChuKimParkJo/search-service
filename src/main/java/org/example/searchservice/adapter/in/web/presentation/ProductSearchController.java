@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/product/search")
+@RequestMapping("/search-service/api/v1/product/search")
 public class ProductSearchController {
 
     private final ProductSearchUseCase productSearchUseCase;

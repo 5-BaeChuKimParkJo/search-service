@@ -1,11 +1,11 @@
-package org.example.searchservice.adapter.in.kafka.event;
+package org.example.searchservice.adapter.in.kafka.event.auction;
 
 import lombok.Getter;
 
 import java.util.List;
 
 @Getter
-public class AuctionBatchEvent {
+public class AuctionCreateEvent {
     private String endAt;
     private String title;
     private List<Image> images;

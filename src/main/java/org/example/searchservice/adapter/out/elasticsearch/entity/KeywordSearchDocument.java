@@ -31,4 +31,8 @@ public class KeywordSearchDocument {
     public void incrementWeight() {
         this.weight++;
     }
+
+    public void incrementWeightBy(int increment) {
+        this.weight += increment;
+    }
 }

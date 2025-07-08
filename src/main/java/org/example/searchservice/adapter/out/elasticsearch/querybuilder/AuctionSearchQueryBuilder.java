@@ -117,6 +117,7 @@ public class AuctionSearchQueryBuilder {
                     .withSearchAfter(searchAfter)
                     .withMaxResults(20)
                     .build();
+
         } catch (Exception e) {
             log.info("Error building auction search query: {}", e.getMessage());
             throw new BaseException(BaseResponseStatus.FAILED_QUERY_BUILD);

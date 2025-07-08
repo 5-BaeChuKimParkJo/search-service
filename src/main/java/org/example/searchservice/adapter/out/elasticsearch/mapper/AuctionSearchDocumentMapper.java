@@ -92,7 +92,6 @@ public class AuctionSearchDocumentMapper {
 
     public GetAuctionSearchResponseDto toGetAuctionSearchResponseDto(AuctionSearchDocument auctionSearchDocument) {
         return GetAuctionSearchResponseDto.builder()
-                .id(auctionSearchDocument.getId())
                 .auctionUuid(auctionSearchDocument.getAuctionUuid())
                 .auctionTitle(auctionSearchDocument.getAuctionTitle())
                 .auctionDescription(auctionSearchDocument.getAuctionDescription())

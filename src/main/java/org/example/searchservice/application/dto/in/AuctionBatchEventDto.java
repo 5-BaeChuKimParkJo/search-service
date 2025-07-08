@@ -2,7 +2,7 @@ package org.example.searchservice.application.dto.in;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.example.searchservice.adapter.in.kafka.event.Image;
+import org.example.searchservice.adapter.in.kafka.event.auction.Image;
 
 import java.time.Instant;
 import java.util.List;

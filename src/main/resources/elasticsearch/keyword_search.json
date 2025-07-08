@@ -55,6 +55,7 @@
           }
         }
       },
+      "content": { "type":  "keyword"},
       "weight": {  "type": "integer"  },
       "auctionUuids": { "type": "keyword" }
     }

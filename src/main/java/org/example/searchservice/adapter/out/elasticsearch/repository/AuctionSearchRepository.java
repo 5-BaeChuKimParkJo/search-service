@@ -120,14 +120,14 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
                 .map(AuctionDeleteEventDto::getAuctionUuid)
                 .toList();
 
-        List<String> auctionIds = new ArrayList<>();
+        List<String> auctionUuIds = new ArrayList<>();
 
         auctionUuids.stream()
                 .forEach(uuid -> {
                     try {
                         auctionSearchElasticRepository.findByAuctionUuid(uuid)
                                 .ifPresent(auctionSearchDocument -> {
-                                    auctionIds.add(auctionSearchDocument.getId());
+                                    auctionUuIds.add(auctionSearchDocument.getAuctionUuid());
                                     log.info("Found auction with UUID: {}", uuid);
                                 });
                     } catch (Exception e) {
@@ -136,7 +136,7 @@ public class AuctionSearchRepository implements AuctionSearchRepositoryPort {
                     }
                 });
 
-        auctionIds.stream()
+        auctionUuIds.stream()
                 .forEach(id -> {
                     try {
                         auctionSearchElasticRepository.deleteById(id);

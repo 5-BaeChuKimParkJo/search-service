@@ -16,6 +16,7 @@ public class GetAuctionSearchRequestDto {
     private String categoryName;
     private List<String> tagNames;
     private boolean isDirectDeal;
+    private String status;
     private String directDealLocation;
     private String productCondition;
     private String sortBy;
@@ -23,9 +24,11 @@ public class GetAuctionSearchRequestDto {
 
     @Builder
     public GetAuctionSearchRequestDto(String auctionTitle, String categoryName, List<String> tagNames,
+                                      String status,
                                       boolean isDirectDeal,String directDealLocation, String productCondition, String sortBy, List<Object> searchAfter) {
         this.auctionTitle = auctionTitle;
         this.categoryName = categoryName;
+        this.status = status;
         this.tagNames = tagNames;
         this.isDirectDeal = isDirectDeal;
         this.directDealLocation = directDealLocation;

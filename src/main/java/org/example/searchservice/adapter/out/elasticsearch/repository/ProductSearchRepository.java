@@ -39,7 +39,6 @@ public class ProductSearchRepository implements ProductSearchRepositoryPort {
 
             if (hits.isEmpty()) {
                 log.warn("검색 결과가 없습니다.");
-                return List.of(); // 또는 null, 또는 BaseException 등 상황에 맞게
             }
 
             return hits.stream()

@@ -39,6 +39,7 @@ public class AuctionSearchVoMapper {
         return GetAuctionSearchRequestDto.builder()
                 .auctionTitle(getAuctionSearchRequestVo.getAuctionTitle())
                 .categoryName(getAuctionSearchRequestVo.getCategoryName())
+                .status(getAuctionSearchRequestVo.getStatus())
                 .tagNames(getAuctionSearchRequestVo.getTagNames())
                 .isDirectDeal(getAuctionSearchRequestVo.isDirectDeal())
                 .directDealLocation(getAuctionSearchRequestVo.getDirectDealLocation())

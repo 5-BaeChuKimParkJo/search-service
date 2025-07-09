@@ -66,12 +66,13 @@ public class ProductSearchVoMapper {
                 .map(this::toGetProductSearchResponseVo)
                 .toList();
 
-        NextCursorProductVo nextCursorVo = NextCursorProductVo.builder()
-                .lastProductPrice(responseDtos.isEmpty() ? null : responseDtos.get(responseDtos.size() - 1).getPrice())
-                .lastProductUuid(responseDtos.isEmpty() ? null : responseDtos.get(responseDtos.size() - 1).getProductUuid())
-                .lastProductCreatedAt(responseDtos.isEmpty() ? null : responseDtos.get(responseDtos.size() - 1).getCreatedAt())
-                .lastProductViewCount(responseDtos.isEmpty() ? null : responseDtos.get(responseDtos.size() - 1).getViewCount())
-                .build();
+        NextCursorProductVo nextCursorVo = responseDtos.isEmpty() ? null :
+                NextCursorProductVo.builder()
+                        .lastProductPrice(responseDtos.get(responseDtos.size() - 1).getPrice())
+                        .lastProductUuid(responseDtos.get(responseDtos.size() - 1).getProductUuid())
+                        .lastProductViewCount(responseDtos.get(responseDtos.size() - 1).getViewCount())
+                        .lastProductCreatedAt(responseDtos.get(responseDtos.size() - 1).getCreatedAt())
+                        .build();
 
 
         return GetProductSearchResponseWrapperVo.builder()

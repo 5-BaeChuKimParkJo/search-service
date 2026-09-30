@@ -13,6 +13,41 @@ import java.util.List;
 public class AuctionBatchEventConverter {
 
     public AuctionUpsertEventDto toAuctionUpsertEventDto(AuctionBatchEventDto auctionBatchEventDto, CategoryResponseDto categoryResponseDto, List<TagResponseDto> tagResponseDtos) {
+        return toAuctionUpsertEventDto(
+                auctionBatchEventDto,
+                categoryResponseDto.getCategoryId(),
+                categoryResponseDto.getCategoryName(),
+                tagResponseDtos.stream().map(TagResponseDto::getTagName).toList()
+        );
+    }
+
+    public AuctionUpsertEventDto toAuctionUpsertEventDto(AuctionBatchEventDto auctionBatchEventDto) {
+        String categoryName = auctionBatchEventDto.getCategoryName();
+        if (categoryName == null || categoryName.isBlank()) {
+            categoryName = "category-" + auctionBatchEventDto.getCategoryId();
+        }
+
+        List<String> tagNames = auctionBatchEventDto.getTagNames();
+        if (tagNames == null || tagNames.isEmpty()) {
+            tagNames = auctionBatchEventDto.getTagIds() == null
+                    ? List.of()
+                    : auctionBatchEventDto.getTagIds().stream().map(tagId -> "tag-" + tagId).toList();
+        }
+
+        return toAuctionUpsertEventDto(
+                auctionBatchEventDto,
+                auctionBatchEventDto.getCategoryId(),
+                categoryName,
+                tagNames
+        );
+    }
+
+    private AuctionUpsertEventDto toAuctionUpsertEventDto(
+            AuctionBatchEventDto auctionBatchEventDto,
+            int categoryId,
+            String categoryName,
+            List<String> tagNames
+    ) {
         return AuctionUpsertEventDto.builder()
                 .endAt(auctionBatchEventDto.getEndAt())
                 .title(auctionBatchEventDto.getTitle())
@@ -22,7 +57,7 @@ public class AuctionBatchEventConverter {
                 .version(auctionBatchEventDto.getVersion())
                 .createdAt(auctionBatchEventDto.getCreatedAt())
                 .viewCount(auctionBatchEventDto.getViewCount())
-                .categoryId(categoryResponseDto.getCategoryId())
+                .categoryId(categoryId)
                 .currentBid(auctionBatchEventDto.getCurrentBid())
                 .minimumBid(auctionBatchEventDto.getMinimumBid())
                 .sellerUuid(auctionBatchEventDto.getSellerUuid())
@@ -33,8 +68,8 @@ public class AuctionBatchEventConverter {
                 .thumbnailUrl(auctionBatchEventDto.getThumbnailUrl())
                 .productCondition(auctionBatchEventDto.getProductCondition())
                 .directDealLocation(auctionBatchEventDto.getDirectDealLocation())
-                .categoryName(categoryResponseDto.getCategoryName())
-                .tagNames(tagResponseDtos.stream().map(TagResponseDto::getTagName).toList())
+                .categoryName(categoryName)
+                .tagNames(tagNames)
                 .build();
     }
 }

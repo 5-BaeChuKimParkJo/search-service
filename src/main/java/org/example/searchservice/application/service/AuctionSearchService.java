@@ -73,30 +73,8 @@ public class AuctionSearchService implements AuctionSearchUseCase {
                         deleteEventDtos.add(auctionMessageMapper.toAuctionDeleteEventDto(auctionBatchEventDto.getAuctionUuid()));
                     } else {
                         log.info("Adding to upsert list: {}", uuid);
-
-                        CategoryResponseDto categoryResponseDto = null;
-                        try {
-                            categoryResponseDto = categoryClient.getCategory(auctionBatchEventDto.getCategoryId());
-                        } catch (Exception e) {
-                            log.info("Failed to fetch category with ID: {}", auctionBatchEventDto.getCategoryId());
-                            throw new BaseException(BaseResponseStatus.FAILED_TO_FEIGHN_CATEGORY);
-                        }
-
-                        List<TagResponseDto> tagResponseDtoList = new ArrayList<>();
-                        auctionBatchEventDto.getTagIds().stream()
-                                .forEach(tagId -> {
-                                    try {
-                                        TagResponseDto tagResponseDto = tagClient.getTagById(tagId);
-                                        tagResponseDtoList.add(tagResponseDto);
-
-                                    } catch (Exception e) {
-                                        log.info("Failed to fetch tag with ID: {}", tagId);
-                                        throw new BaseException(BaseResponseStatus.FAILED_TO_FEIGHN_TAG);
-                                    }
-                                });
-
                         AuctionUpsertEventDto auctionUpsertEventDto = auctionBatchEventConverter
-                                .toAuctionUpsertEventDto(auctionBatchEventDto, categoryResponseDto, tagResponseDtoList);
+                                .toAuctionUpsertEventDto(auctionBatchEventDto);
 
                         upsertEventDtos.add(auctionUpsertEventDto);
                     }

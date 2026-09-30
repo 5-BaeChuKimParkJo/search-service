@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
 
+import java.net.URI;
+
 @Configuration
 public class ElasticSearchConfig extends ElasticsearchConfiguration {
 
@@ -66,8 +68,17 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
     @NonNull
     public ClientConfiguration clientConfiguration() {
         return ClientConfiguration.builder()
-                .connectedTo(url)
+                .connectedTo(connectionAddress(url))
                 .withBasicAuth(username, password)
                 .build();
+    }
+
+    static String connectionAddress(String url) {
+        URI uri = URI.create(url);
+        int port = uri.getPort();
+        if (port < 0) {
+            port = "https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80;
+        }
+        return uri.getHost() + ":" + port;
     }
 }

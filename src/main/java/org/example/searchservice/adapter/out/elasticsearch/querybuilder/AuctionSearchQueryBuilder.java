@@ -86,26 +86,26 @@ public class AuctionSearchQueryBuilder {
                 case "latest": // 최신순
                     sort = Sort.by(
                             Sort.Order.desc("createdAt"),
-                            Sort.Order.asc("auctionUuid.keyword")
+                            Sort.Order.asc("auctionUuid")
                     );
                     break;
                 case "priceHigh": // 높은 가격순
                     sort = Sort.by(
                             Sort.Order.desc("currentBid"),
-                            Sort.Order.asc("auctionUuid.keyword")
+                            Sort.Order.asc("auctionUuid")
                     );
                     break;
                 case "priceLow": // 낮은 가격순
                     sort = Sort.by(
                             Sort.Order.asc("currentBid"),
-                            Sort.Order.asc("auctionUuid.keyword")
+                            Sort.Order.asc("auctionUuid")
                     );
 
                     break;
                 case "recommended": // 추천순 (정렬 기준 추가 필요)
                     sort = Sort.by(
                             Sort.Order.desc("viewCount"),
-                            Sort.Order.asc("auctionUuid.keyword")
+                            Sort.Order.asc("auctionUuid")
                     );
                     break;
                 default:
